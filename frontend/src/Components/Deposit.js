@@ -3,9 +3,9 @@
 // #region  P R E A M B L E
 // #region  D O C U M E N T A T I O N
 /*
- *      Title:    MicroCODE Bad Bank React Deposit
+ *      Title:    MicroCODE App React Deposit
  *      Module:   Modules (./deposit.js)
- *      Project:  MicroCODE Bad Bank React App
+ *      Project:  MicroCODE App React App
  *      Customer: Internal
  *      Creator:  MicroCODE Incorporated
  *      Date:     June 2022
@@ -23,7 +23,7 @@
  *      DESCRIPTION:
  *      ------------
  *
- *      This module implements the MicroCODE's Bad Bank React Deposit.
+ *      This module implements the MicroCODE's App React Deposit.
  *
  *
  *      REFERENCES:
@@ -49,7 +49,7 @@
  *
  *  Date:         By-Group:   Rev:     Description:
  *
- *  02-Jun-2022   TJM-MCODE  {0001}    New module implementing the creation Bad Bank Deposits.
+ *  02-Jun-2022   TJM-MCODE  {0001}    New module implementing the creation App Deposits.
  *
  *
  */
@@ -99,7 +99,7 @@ const MINIMUM_DEPOSIT = 10;
 /**
  * @func Deposit
  * @memberof app
- * @desc Bad Bank Deposit Component.
+ * @desc App Deposit Component.
  * @api public
  * @param {nil} no properties.
  * @returns {JSX} JavaScript Extension (JSX) code representing the current state of the component.

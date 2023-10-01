@@ -3,9 +3,9 @@
 // #region  P R E A M B L E
 // #region  D O C U M E N T A T I O N
 /*
- *      Title:    MicroCODE Bad Bank React Home
+ *      Title:    MicroCODE App React Home
  *      Module:   Modules (./home.js)
- *      Project:  MicroCODE Bad Bank React App
+ *      Project:  MicroCODE App React App
  *      Customer: Internal
  *      Creator:  MicroCODE Incorporated
  *      Date:     June 2022
@@ -23,7 +23,7 @@
  *      DESCRIPTION:
  *      ------------
  *
- *      This module implements the MicroCODE's Bad Bank React Home.
+ *      This module implements the MicroCODE's App React Home.
  *
  *
  *      REFERENCES:
@@ -47,7 +47,7 @@
  *
  *  Date:         By-Group:   Rev:     Description:
  *
- *  02-Jun-2022   TJM-MCODE  {0001}    New module implementing the Bad Bank Account Home.
+ *  02-Jun-2022   TJM-MCODE  {0001}    New module implementing the App Account Home.
  *
  *
  */
@@ -85,7 +85,7 @@ import logo from '../logo.svg';
 /**
  * @func Home
  * @memberof app
- * @desc controls a user logging into their Bad Bank Account.
+ * @desc controls a user logging into their App Account.
  * @api public
  * @param {nil} no properties.
  * @returns {JSX} JavaScript Extension (JSX) code representing the current state of the component.
@@ -120,11 +120,11 @@ function Home()
     return (
         <BankCard
             txtcolor="black"
-            header="McGuire's Bad Bank"
+            header="MicroCODE's Web App"
             width="30rem"
-            title="Welcome to Bad Bank"
-            text='You should not trust us with your money!'
-            body={(<img src={logo} width="400" className="App-logo" alt="Bad Bank Logo" />)}
+            title="Welcome to MicroCODE!"
+            text='Where LADDERS® knows the difference!'
+            body={(<img src={logo} width="400" className="App-logo" alt="App Logo" />)}
         />
     );
 }

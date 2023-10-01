@@ -3,7 +3,7 @@
 // #region  P R E A M B L E
 // #region  D O C U M E N T A T I O N
 /*
- *      Title:    MicroCODE Card component for Bad Bank React App
+ *      Title:    MicroCODE Card component for App React App
  *      Module:   Modules (./context.js)
  *      Project:  MicroCODE Common Code
  *      Customer: Internal

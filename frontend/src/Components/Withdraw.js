@@ -3,9 +3,9 @@
 // #region  P R E A M B L E
 // #region  D O C U M E N T A T I O N
 /*
- *      Title:    MicroCODE Bad Bank React Withdraw
+ *      Title:    MicroCODE App React Withdraw
  *      Module:   Modules (./withdraw.js)
- *      Project:  MicroCODE Bad Bank React App
+ *      Project:  MicroCODE App React App
  *      Customer: Internal
  *      Creator:  MicroCODE Incorporated
  *      Date:     June 2022
@@ -23,7 +23,7 @@
  *      DESCRIPTION:
  *      ------------
  *
- *      This module implements the MicroCODE's Bad Bank React Withdraw.
+ *      This module implements the MicroCODE's App React Withdraw.
  *
  *
  *      REFERENCES:
@@ -49,7 +49,7 @@
  *
  *  Date:         By-Group:   Rev:     Description:
  *
- *  02-Jun-2022   TJM-MCODE  {0001}    New module implementing the creation Bad Bank Withdraws.
+ *  02-Jun-2022   TJM-MCODE  {0001}    New module implementing the creation App Withdraws.
  *
  *
  */
@@ -98,7 +98,7 @@ const MINIMUM_WITHDRAW = 5;
 /**
  * @func Withdraw
  * @memberof app
- * @desc the Bad Bank Withdraw Component.
+ * @desc the App Withdraw Component.
  * @api public
  * @param {nil} no properties.
  * @returns {JSX} JavaScript Extension (JSX) code representing the current state of the component.

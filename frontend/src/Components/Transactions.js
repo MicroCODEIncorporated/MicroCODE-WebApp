@@ -3,9 +3,9 @@
 // #region  P R E A M B L E
 // #region  D O C U M E N T A T I O N
 /*
- *      Title:    MicroCODE Bad Bank React Transactions
+ *      Title:    MicroCODE App React Transactions
  *      Module:   Modules (./transactions.js)
- *      Project:  MicroCODE Bad Bank React App
+ *      Project:  MicroCODE App React App
  *      Customer: Internal
  *      Creator:  MicroCODE Incorporated
  *      Date:     June 2022
@@ -23,7 +23,7 @@
  *      DESCRIPTION:
  *      ------------
  *
- *      This module implements the MicroCODE's Bad Bank React Transactions.
+ *      This module implements the MicroCODE's App React Transactions.
  *
  *
  *      REFERENCES:
@@ -49,7 +49,7 @@
  *
  *  Date:         By-Group:   Rev:     Description:
  *
- *  02-Jun-2022   TJM-MCODE  {0001}    New module implementing the creation Bad Bank Transactionss.
+ *  02-Jun-2022   TJM-MCODE  {0001}    New module implementing the creation App Transactionss.
  *
  *
  */
@@ -96,7 +96,7 @@ var logSource = path.basename(__filename);
 /**
  * @func Transactions
  * @memberof app
- * @desc the Bad Bank Transactions Component.
+ * @desc the App Transactions Component.
  * @api public
  * @param {nil} no properties.
  * @returns {JSX} JavaScript Extension (JSX) code representing the current state of the component.

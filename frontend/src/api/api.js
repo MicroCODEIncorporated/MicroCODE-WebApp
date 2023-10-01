@@ -3,9 +3,9 @@
 // #region  P R E A M B L E
 // #region  D O C U M E N T A T I O N
 /*
- *      Title:    Bad Bank API
- *      Module:   api (badbank-frontend:api.js)
- *      Project:  MicroCODE Version of MIT 'Bad Bank'
+ *      Title:    App API
+ *      Module:   api (mcode-frontend:api.js)
+ *      Project:  MicroCODE Website 'App'
  *      Customer: Internal
  *      Creator:  MicroCODE Incorporated
  *      Date:     December 2021
@@ -24,7 +24,7 @@
  *      ------------
  *
  *      This module implements the MicroCODE JavaScript Class for 'api'
- *      to implement the MIT 'Bad Bank' Fire Hydrant project.
+ *      to implement the MicroCODE 'Web App' project.
  *
  *      This module defines HTML calls into the API functions of our Server.
  *      Also known as the 'Function Hooks' for each UI Widget.
@@ -320,7 +320,7 @@ api.balance = async (email) =>
 
 /**
  * @func sendMoney
- * @desc SEND MONEY to another Bad Bank user from Back-End.
+ * @desc SEND MONEY to another App user from Back-End.
  * @api public
  * @memberof api
  * @param {string} email user's email - UNIQUE ACCOUNT KEY.

@@ -5,8 +5,8 @@
 /*
  *      Title:    MicroCODE
  *      Module:   index (.\backend\server.js)
- *      Project:  MicroCODE 3-Tier MERN App `BadBank`
- *      Customer: MIT xPRO Course
+ *      Project:  MicroCODE 3-Tier MERN App 'MicroCODE'
+ *      Customer: MicroCODE (Internal)
  *      Creator:  MicroCODE Incorporated
  *      Date:     October 2022
  *      Author:   Timothy J McGuire
@@ -24,8 +24,7 @@
  *      ------------
  *
  *      This module implements the MicroCODE JavaScript Class for `backend\server`
- *      to implement the MIT `Bad Bank` Fire Hydrant project.
- *      This was reused in the refactoring of the React App version of my `Bad Bank` app.
+ *      to implement the MicroCODE Website refactoring to App.
  *
  *      This implements the Server-side, the `BACK-END`.
  *
@@ -85,7 +84,7 @@
 
 /**
  * @namespace server
- * @desc Bad Bank's Express Route Handler (ERH).
+ * @desc App's Express Route Handler (ERH).
  */
 
 // #region  C O N S T A N T S
@@ -213,13 +212,13 @@ app.listen(APP_PORT, function ()
 app.get(`/`, function (req, res)
 {
     // a simple response to a request
-    res.send("Bad Bank Server is online. [NOTE: This should never be seen if the React App is being served properly.]");
+    res.send("MicroCODE Server is online. [NOTE: This should never be seen if the React App is being served properly.]");
 });
 
 app.get(`/test`, function (req, res)
 {
     // a simple response to a request
-    res.send("Bad Bank Server was test scucessful. [NOTE: Changes to this file are *not* dynamic, they are loaded at Page Display.]");
+    res.send("MicroCODE Server was test scucessful. [NOTE: Changes to this file are *not* dynamic, they are loaded at Page Display.]");
 });
 
 /**
@@ -523,7 +522,7 @@ app.get(`/account/sendMoney/:email/:amount/:receiver`, function (req, res)
         {
             if (!res_find)
             {
-                const sendMoney_msg = `SENDMONEY -- Receiver doesn't have a Bad Bank Account, email: ${req.params.receiver}`;
+                const sendMoney_msg = `SENDMONEY -- Receiver doesn't have a App Account, email: ${req.params.receiver}`;
                 mcode.log(sendMoney_msg, logSource, `error`);
                 res.status(401).json({error: sendMoney_msg});
             }

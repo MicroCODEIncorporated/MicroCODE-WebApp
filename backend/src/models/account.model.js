@@ -5,8 +5,8 @@
 /*
  *      Title:    MicroCODE Common User Model
  *      Module:   Modules (./account.model.js)
- *      Project:  MicroCODE 3-Tier MERN App 'Bad Bank'
- *      Customer: Internal + MIT xPRO Course
+ *      Project:  MicroCODE 3-Tire MERN 'Web App'
+ *      Customer: MicroCODE (Internal)
  *      Creator:  MicroCODE Incorporated
  *      Date:     October 2022
  *      Author:   Timothy J McGuire
@@ -23,7 +23,7 @@
  *      DESCRIPTION:
  *      ------------
  *
- *      This module implements the Bad Bank Account Model.
+ *      This module implements the App Account Model.
  *
  *
  *      REFERENCES:

@@ -3,9 +3,9 @@
 // #region  P R E A M B L E
 // #region  D O C U M E N T A T I O N
 /*
- *      Title:    MicroCODE Bad Bank React Login
+ *      Title:    MicroCODE App React Login
  *      Module:   Modules (./login.js)
- *      Project:  MicroCODE Bad Bank React App
+ *      Project:  MicroCODE App React App
  *      Customer: Internal
  *      Creator:  MicroCODE Incorporated
  *      Date:     June 2022
@@ -23,7 +23,7 @@
  *      DESCRIPTION:
  *      ------------
  *
- *      This module implements the MicroCODE's Bad Bank React Login.
+ *      This module implements the MicroCODE's App React Login.
  *
  *
  *      REFERENCES:
@@ -47,7 +47,7 @@
  *
  *  Date:         By-Group:   Rev:     Description:
  *
- *  02-Jun-2022   TJM-MCODE  {0001}    New module implementing the Bad Bank Account Login.
+ *  02-Jun-2022   TJM-MCODE  {0001}    New module implementing the App Account Login.
  *  17-Oct-2022   TJM-MCODE  {0002}    Added APPLE Sign-In.
  *
  *
@@ -112,7 +112,7 @@ scriptjs.get('https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_
 /**
  * @func Login
  * @memberof app
- * @desc Controls a user logging into their Bad Bank Account.
+ * @desc Controls a user logging into their App Account.
  * @api public
  * @param {nil} no properties.
  * @returns {JSX} JavaScript Extension (JSX) code representing the current state of the component.

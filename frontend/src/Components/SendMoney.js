@@ -3,9 +3,9 @@
 // #region  P R E A M B L E
 // #region  D O C U M E N T A T I O N
 /*
- *      Title:    MicroCODE Bad Bank React SendMoney
+ *      Title:    MicroCODE App React SendMoney
  *      Module:   Modules (./sendMoney.js)
- *      Project:  MicroCODE Bad Bank React App
+ *      Project:  MicroCODE App React App
  *      Customer: Internal
  *      Creator:  MicroCODE Incorporated
  *      Date:     June 2022
@@ -23,7 +23,7 @@
  *      DESCRIPTION:
  *      ------------
  *
- *      This module implements the MicroCODE's Bad Bank React SendMoney.
+ *      This module implements the MicroCODE's App React SendMoney.
  *
  *
  *      REFERENCES:
@@ -49,7 +49,7 @@
  *
  *  Date:         By-Group:   Rev:    Description:
  *
- *  15-Oct-2022   TJM-MCODE  {0001}   New module implementing the creation Bad Bank SendMoney.
+ *  15-Oct-2022   TJM-MCODE  {0001}   New module implementing the creation App SendMoney.
  *  15-Oct-2022   TJM-MCODE  {0002}   Added 'Send Money' feature.
  *
  *
@@ -99,7 +99,7 @@ const MINIMUM_SENDMONEY = 10;
 /**
  * @func SendMoney
  * @memberof app
- * @desc the Bad Bank SendMoney Component.
+ * @desc the App SendMoney Component.
  * @api public
  * @param {nil} no properties.
  * @returns {JSX} JavaScript Extension (JSX) code representing the current state of the component.

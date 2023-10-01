@@ -1,5 +1,5 @@
-# MITxPRO-BadBankCapstone
-A 5th refactoring of the Bad Bank App, moving it into three (3) Docker Containers all running in a Cloud VM.
+# MicroCODE's Website (www.mcode.com)
+A refactoring of our website, moving it into three (3) Docker Containers all running in a Cloud VM.
 
     * Frontend - the Web Browser Client
     * Backend - the Cloud based Server
@@ -8,19 +8,14 @@ A 5th refactoring of the Bad Bank App, moving it into three (3) Docker Container
 
 ## Description
 
-This will be used for my MIT xPRO Portfolio.
-This Bad Bank project is a refactored version of the Bad Bank 'Fire Hydrant' project I did
-in the previous MIT 'Digital Transformation' course in December 2021.
-It was bascially rewritten from scratch in React Components, Context, and State.
-A 3rd refactoring took all possible Components and commonized and simplified them.
+This represents our move from a purely static website to an interactive App site with
+a 'Merch' Store, User Accounts, and LADDERS as a Service (LaaS).
 
-This refactoring moved the entire App to the MERN Frontend-Backend-Database Architecture...
-
-This App was built from a new template I created for the MIT xPRO MERN course.
+This App was built from a new template I created for the MIT xPRO MERN course in 2021-2022.
 The template allows me to built a full 3-Tier 'Dockerized' App and deploy it immediately to a
-hosting service like DigitalOcean.
+hosting service like DigitalOcean, AWS, or Azure.
 
-The App template includes (GitHub Repo: MITxPRO-DockerMERN) inlcudes a full CI/CD pipleine
+The App template (GitHub Repo: MITxPRO-DockerMERN) inlcudes a full CI/CD pipleine
 that utilizes a GitHib Action, Docker Hub, and three Containers.
 
 
@@ -76,9 +71,9 @@ node puppeteer
 
 <p align="left"><img src=".\.github\images\app-ui.png" width="720" title="App U.I..."></p>
 
-* Demonstration of the React Bad Bank... (https://www.youtube.com/watch?v=kQxvMWJc2JE&t=5s)
+* Demonstration of the LADDERS Compare Report...
 
-<video id="demo-video" style="border-style:solid; border-width:2px" src="https://youtu.be/hctvo-EFqe4.mp4" width="1024" allowfullscreen="allowfullscreen" webkitallowfullscreen="webkitallowfullscreen" mozallowfullscreen="mozallowfullscreen" allow="autoplay *" loop autoplay autobuffer controls muted>
+<video id="demo-video" style="border-style:solid; border-width:2px" src="https://youtu.be/ladders-report-demo.mp4" width="1024" allowfullscreen="allowfullscreen" webkitallowfullscreen="webkitallowfullscreen" mozallowfullscreen="mozallowfullscreen" allow="autoplay *" loop autoplay autobuffer controls muted>
 Your browser does not support the HTML5 player.
 </video>
 
@@ -105,35 +100,18 @@ This is an unsupported demonstation project.
 
 Contributors names and contact info
 
-* Dr. Abel Sanchez (MIT) [@Unknown](https://twitter.com/Unknown)
-
 * Timothy J McGuire [@TimothyMcGuire](https://twitter.com/TimothyMcGuire)
 
 
 ## Version History
 
-* 0.7
-    * Added a 2nd method of Authentication.
-* 0.6
-    * Fixed a Promise sequence issue with dal.sendMoney().
-* 0.5
-    * Refactored into the 3-Tier Dockerized MongoDB, Express, React, NodeJS (MERN) Architecture.
-* 0.4
-    * Refactored into the MongoDB, Express, React, NodeJS (MERN) Architecture.
-* 0.3
-    * Refactored further by simplifying the Form Component for all functions.
-* 0.2
-    * Refactored further into a 'create-react-app' framework with Context.
-* 0.1
-    * Refactored into the MicroCODE [MCODE] style and templates.
-    * See [commit change]() or See [release history]()
 * 0.0
-    * Coded using MicroCODE Templates, following along with Dr. Sanchez' videos.
+    * Coded using MicroCODE Templates, MITxPRO-DockerMERN and www-mcode-mern.
 
 ## Future Development
 
-* 0.8
-    * Encrypt email password properly
+* 0.*
+    * Add microservices--additional Docker Containers--for AUTH, SMS, EMAIL and FILEs.
 
 
 ## License

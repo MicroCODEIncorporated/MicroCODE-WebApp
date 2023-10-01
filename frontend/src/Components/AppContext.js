@@ -3,7 +3,7 @@
 // #region  P R E A M B L E
 // #region  D O C U M E N T A T I O N
 /*
- *      Title:    MicroCODE Bad Bank Context
+ *      Title:    MicroCODE App Context
  *      Module:   Modules (./context.js)
  *      Project:  MicroCODE Common Code
  *      Customer: Internal
@@ -48,7 +48,7 @@
  *
  *  Date:         By-Group:   Rev:     Description:
  *
- *  02-Jun-2022   TJM-MCODE  {0001}    New module for Bad Bank as a React App.
+ *  02-Jun-2022   TJM-MCODE  {0001}    New module for App as a React App.
  *  15-Oct-2022   TJM-MCODE  {0002}    Added 'Send Money' feature -- added 'Receiver' to Context.
  *
  *

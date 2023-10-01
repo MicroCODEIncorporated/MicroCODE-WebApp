@@ -3,9 +3,9 @@
 // #region  P R E A M B L E
 // #region  D O C U M E N T A T I O N
 /*
- *      Title:    Bad Bank BACK-END -- Database Abstraction Layer (DAL)
+ *      Title:    App BACK-END -- Database Abstraction Layer (DAL)
  *      Module:   index (badbank:dal.js)
- *      Project:  MicroCODE Version of MIT 'Bad Bank'
+ *      Project:  MicroCODE Website 'App'
  *      Customer: Internal
  *      Creator:  MicroCODE Incorporated
  *      Date:     August 2022
@@ -108,8 +108,6 @@ const logSource = path.basename(__filename);
 const DB_URL = `mongodb://${process.env.APP_NAME}-database:${process.env.APP_DATABASE_PORT}/${process.env.APP_NAME}`;
 
 const DB_NAME = `${process.env.APP_DATABASE_NAME}`;
-
-const BB_OVERDRAFT_FEE = 35.00; // really 'Bad Bank'
 
 // #endregion
 
@@ -339,12 +337,12 @@ function withdrawFunds(email, amount)
                     {
                         mcode.log(`DAL: withdrawFunds - MongoDB res: ${JSON.stringify(res_update)}`, logSource, `info`);
 
-                        // check for OVERDRAFT and generate a seocnd transaction if required (Bad Bank always let's you overdraw!
+                        // check for OVERDRAFT and generate a seocnd transaction if required (App always let's you overdraw!
                         if (res_find.balance < 0)
                         {
                             // Add withdraw and create a TRANSACTION for it
-                            res_find.balance = mcode.roundToCents(parseFloat(res_find.balance) - parseFloat(BB_OVERDRAFT_FEE));
-                            res_find.transactions.push(model.transactionRecord("OVERDRAFT", BB_OVERDRAFT_FEE, res_find.balance));
+                            res_find.balance = mcode.roundToCents(parseFloat(res_find.balance) - parseFloat(35));
+                            res_find.transactions.push(model.transactionRecord("OVERDRAFT", 35, res_find.balance));
 
                             db.collection('Accounts')
                                 .updateOne({"email": email}, {$set: {balance: res_find.balance, transactions: res_find.transactions}})

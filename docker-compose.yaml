@@ -134,19 +134,19 @@ version: '3'
 #
 volumes:
   frontend-volume:  # our Frontend/Client execution volume
-    name: "badbank-frontend"
+    name: "mcode-frontend"
     external: false  # temporary, build specific
 #
   backend-volume:  # our Backend/Server execution volume
-    name: "badbank-backend"
+    name: "mcode-backend"
     external: false  # temporary, build specific
 #
   database-volume:  # our Database configuration volume
-    name: "badbank-database"
+    name: "mcode-database"
     external: false  # temporary, build specific
 #
   mongodb-volume:  # our Database/MongoDB storage volume
-    name: "badbank-mongodb"
+    name: "mcode-mongodb"
     external: true  # keep after all Containers are destroyed
 #
 services:

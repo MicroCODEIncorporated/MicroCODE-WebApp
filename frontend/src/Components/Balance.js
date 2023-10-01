@@ -3,9 +3,9 @@
 // #region  P R E A M B L E
 // #region  D O C U M E N T A T I O N
 /*
- *      Title:    MicroCODE Bad Bank React Balance
+ *      Title:    MicroCODE App React Balance
  *      Module:   Modules (./balance.js)
- *      Project:  MicroCODE Bad Bank React App
+ *      Project:  MicroCODE App React App
  *      Customer: Internal
  *      Creator:  MicroCODE Incorporated
  *      Date:     June 2022
@@ -23,7 +23,7 @@
  *      DESCRIPTION:
  *      ------------
  *
- *      This module implements the MicroCODE's Bad Bank React Balance.
+ *      This module implements the MicroCODE's App React Balance.
  *
  *
  *      REFERENCES:
@@ -49,7 +49,7 @@
  *
  *  Date:         By-Group:   Rev:     Description:
  *
- *  02-Jun-2022   TJM-MCODE  {0001}    New module implementing the creation Bad Bank Balances.
+ *  02-Jun-2022   TJM-MCODE  {0001}    New module implementing the creation App Balances.
  *
  *
  */
@@ -96,7 +96,7 @@ var logSource = path.basename(__filename);
 /**
  * @func Balance
  * @memberof app
- * @desc the Bad Bank Balance Component.
+ * @desc the App Balance Component.
  * @api public
  * @param {nil} no properties.
  * @returns {JSX} JavaScript Extension (JSX) code representing the current state of the component.

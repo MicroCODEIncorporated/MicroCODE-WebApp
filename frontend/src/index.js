@@ -3,7 +3,7 @@
 // #region  P R E A M B L E
 // #region  D O C U M E N T A T I O N
 /*
- *      Title:    MicroCODE Bad Bank 3-Tier App - FRONT-END
+ *      Title:    MicroCODE App 3-Tier App - FRONT-END
  *      Module:   Modules (./index.js)
  *      Project:  MicroCODE 3-Tier MERN App 'BadBank'
  *      Customer: Internal+MIT xPRO Course
@@ -23,7 +23,7 @@
  *      DESCRIPTION:
  *      ------------
  *
- *      This module implements the MicroCODE's Bad Bank React App Entry Point.
+ *      This module implements the MicroCODE's App React App Entry Point.
  *      This started with MicroCODE's JavaScript Template Class for 'frontend\client'
  *      to implement the template MERN 'BadBank' project.
  *
@@ -51,7 +51,7 @@
  *
  *  Date:         By-Group:   Rev:     Description:
  *
- *  03-Jun-2022   TJM-MCODE  {0001}    New module implementing the Bad Bank App Entry.
+ *  03-Jun-2022   TJM-MCODE  {0001}    New module implementing the App App Entry.
  *
  *
  */
@@ -69,7 +69,7 @@
 
 /**
  * @namespace app
- * @desc Bad Bank's React Single Page App (SPA).
+ * @desc App's React Single Page App (SPA).
  */
 
 // #region  I M P O R T S

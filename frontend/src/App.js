@@ -3,10 +3,10 @@
 // #region  P R E A M B L E
 // #region  D O C U M E N T A T I O N
 /*
- *      Title:    MicroCODE Bad Bank React App
+ *      Title:    MicroCODE App React App
  *      Module:   Modules (./App.js)
  *      Project: MicroCODE 3-Tier MERN App 'BadBank'
- *      Customer: MIT xPRO Course
+ *      Customer: MicroCODE (Internal)
  *      Creator:  MicroCODE Incorporated
  *      Date:     October 2022
  *      Author:   Timothy J McGuire
@@ -23,7 +23,7 @@
  *      DESCRIPTION:
  *      ------------
  *
- *      This module implements the MicroCODE's Bad Bank React App Entry Point.
+ *      This module implements the MicroCODE's App React App Entry Point.
  *
  *
  *      REFERENCES:
@@ -47,7 +47,7 @@
  *
  *  Date:         By-Group:   Rev:     Description:
  *
- *  03-Jun-2022   TJM-MCODE  {0001}    New module implementing the Bad Bank App Entry.
+ *  03-Jun-2022   TJM-MCODE  {0001}    New module implementing the App App Entry.
  *  15-Oct-2022   TJM-MCODE  {0002}    Added 'Send Money' feature.
  *
  *
@@ -125,7 +125,7 @@ const apiUrl = `${process.env.REACT_APP_BACKEND_URL}`;
 /**
  * @func App
  * @memberof app
- * @desc Bad Bank's Single Page App (SPA).
+ * @desc App's Single Page App (SPA).
  * @api public
  * @param {nil} no properties.
  * @returns {JSX} JavaScript Extension (JSX) code representing the current state of the component.

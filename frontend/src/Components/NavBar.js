@@ -3,9 +3,9 @@
 // #region  P R E A M B L E
 // #region  D O C U M E N T A T I O N
 /*
- *      Title:    MicroCODE Bad Bank React Nav Bar
+ *      Title:    MicroCODE App React Nav Bar
  *      Module:   Modules (./navbar.js)
- *      Project:  MicroCODE Bad Bank React App
+ *      Project:  MicroCODE App React App
  *      Customer: Internal
  *      Creator:  MicroCODE Incorporated
  *      Date:     June 2, 2022
@@ -23,7 +23,7 @@
  *      DESCRIPTION:
  *      ------------
  *
- *      This module implements the MicroCODE's Bad Bank React Nav Bar.
+ *      This module implements the MicroCODE's App React Nav Bar.
  *
  *
  *      REFERENCES:
@@ -47,7 +47,7 @@
  *
  *  Date:         By-Group:   Rev:     Description:
  *
- *  02-Jun-2022   TJM-MCODE  {0001}    New module implementing the Bad Bank Nav Bar.
+ *  02-Jun-2022   TJM-MCODE  {0001}    New module implementing the App Nav Bar.
  *  15-Oct-2022   TJM-MCODE  {0002}    Added 'Send Money' feature.
  *
  *
@@ -84,7 +84,7 @@ import {AppContext} from './AppContext';
 /**
  * @func NavBar
  * @memberof app
- * @desc the Bad Bank Navigation Bar.
+ * @desc the App Navigation Bar.
  * @api public
  * @param {nil} no properties.
  * @returns {JSX} JavaScript Extension (JSX) code representing the current state of the component.

@@ -19,11 +19,11 @@
 
     <h1 class="page-title">Source: frontend/src/Components/AllData.js</h1>
 
-    
 
 
 
-    
+
+
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>// #region  H E A D E R
@@ -31,9 +31,9 @@
 // #region  P R E A M B L E
 // #region  D O C U M E N T A T I O N
 /*
- *      Title:    MicroCODE Bad Bank React All Data
+ *      Title:    MicroCODE App React All Data
  *      Module:   Modules (./alldata.js)
- *      Project:  MicroCODE Bad Bank React App
+ *      Project:  MicroCODE App React App
  *      Customer: Internal
  *      Creator:  MicroCODE Incorporated
  *      Date:     June 2022
@@ -51,7 +51,7 @@
  *      DESCRIPTION:
  *      ------------
  *
- *      This module implements the MicroCODE's Bad Bank React Login.
+ *      This module implements the MicroCODE's App React Login.
  *
  *
  *      REFERENCES:
@@ -75,7 +75,7 @@
  *
  *  Date:         By-Group:   Rev:     Description:
  *
- *  02-Jun-2022   TJM-MCODE  {0001}    New module implementing the Bad Bank Context Display (All Data).
+ *  02-Jun-2022   TJM-MCODE  {0001}    New module implementing the App Context Display (All Data).
  *
  *
  */
@@ -122,7 +122,7 @@ var logSource = path.basename(__filename);
 /**
  * @func AllData
  * @memberof app
- * @desc returns all data from our Bad Bank Accounts.
+ * @desc returns all data from our App Accounts.
  * @api public
  * @param {nil} no properties.
  * @returns {JSX} JavaScript Extension (JSX) code representing the current state of the component.
@@ -184,7 +184,7 @@ function AllData()
         {
             log(`[ALLDATA] Awaiting Server response...`, logSource, `warn`);
 
-            accountArray.push(&lt;li key={key} className="list-group-item">Awaiting badbank-backend response...&lt;/li>);
+            accountArray.push(&lt;li key={key} className="list-group-item">Awaiting mcode-backend response...&lt;/li>);
         }
 
         return accountArray;

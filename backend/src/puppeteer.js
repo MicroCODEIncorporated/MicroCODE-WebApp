@@ -6,7 +6,7 @@
  *      Title:    MicroCODE Common Puppeteer Module
  *      Module:   Modules (./puppeteer.js)
  *      Project:  MicroCODE 3-Tier MERN Template 'AppName'
- *      Customer: Internal + MIT xPRO Course
+ *      Customer: MicroCODE (Internal)
  *      Creator:  MicroCODE Incorporated
  *      Date:     October 2022
  *      Author:   Timothy J McGuire

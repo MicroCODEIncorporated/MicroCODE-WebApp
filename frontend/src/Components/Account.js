@@ -3,9 +3,9 @@
 // #region  P R E A M B L E
 // #region  D O C U M E N T A T I O N
 /*
- *      Title:    MicroCODE Bad Bank React Account
+ *      Title:    MicroCODE App React Account
  *      Module:   Modules (./account.js)
- *      Project:  MicroCODE Bad Bank React App
+ *      Project:  MicroCODE App React App
  *      Customer: Internal
  *      Creator:  MicroCODE Incorporated
  *      Date:     June 2022
@@ -23,7 +23,7 @@
  *      DESCRIPTION:
  *      ------------
  *
- *      This module implements the MicroCODE's Bad Bank React Account.
+ *      This module implements the MicroCODE's App React Account.
  *
  *
  *      REFERENCES:
@@ -53,7 +53,7 @@
  *
  *  Date:         By-Group:   Rev:      Description:
  *
- *  02-Jun-2022   TJM-MCODE  {0001}     New module implementing the creation Bad Bank Accounts.
+ *  02-Jun-2022   TJM-MCODE  {0001}     New module implementing the creation App Accounts.
  *  14-Oct-2022   TJM-MCODE  {0002}     Added Roles for controlling access to ALL DATA.
  *  17-Oct-2022   TJM-MCODE  {0003}     UAT: Force ROLE to all CAPS during entry... should actually be a pulldown.
  *
@@ -110,7 +110,7 @@ const MINIMUM_OPENING_DEPOSIT = 100;
 /**
  * @func Account
  * @memberof app
- * @desc The Bad Bank Account Component.
+ * @desc The App Account Component.
  * @api public
  * @param {nil} no properties.
  * @returns {JSX} JavaScript Extension (JSX) code representing the current state of the component.

@@ -1,5 +1,5 @@
-# MicroCODE's Website (www.mcode.com)
-A refactoring of our website, moving it into three (3) Docker Containers all running in a Cloud VM.
+# MicroCODE's WebApp
+A generic 3-Tier MERN Web App deployed in three (3) Docker Containers.
 
     * Frontend - the Web Browser Client
     * Backend - the Cloud based Server
@@ -8,14 +8,14 @@ A refactoring of our website, moving it into three (3) Docker Containers all run
 
 ## Description
 
-This represents our move from a purely static website to an interactive App site with
-a 'Merch' Store, User Accounts, and LADDERS as a Service (LaaS).
+This represents a generic React App that can create User Account, contril functionality by 'Role',
+handle authentication--caution this example is simple 'oprn text' passwords.
 
 This App was built from a new template I created for the MIT xPRO MERN course in 2021-2022.
 The template allows me to built a full 3-Tier 'Dockerized' App and deploy it immediately to a
 hosting service like DigitalOcean, AWS, or Azure.
 
-The App template (GitHub Repo: MITxPRO-DockerMERN) inlcudes a full CI/CD pipleine
+The App template (GitHub Repo: MicroCODE-WebApp) inlcudes a full CI/CD pipleine
 that utilizes a GitHib Action, Docker Hub, and three Containers.
 
 
@@ -71,12 +71,6 @@ node puppeteer
 
 <p align="left"><img src=".\.github\images\app-ui.png" width="720" title="App U.I..."></p>
 
-* Demonstration of the LADDERS Compare Report...
-
-<video id="demo-video" style="border-style:solid; border-width:2px" src="https://youtu.be/ladders-report-demo.mp4" width="1024" allowfullscreen="allowfullscreen" webkitallowfullscreen="webkitallowfullscreen" mozallowfullscreen="mozallowfullscreen" allow="autoplay *" loop autoplay autobuffer controls muted>
-Your browser does not support the HTML5 player.
-</video>
-
 
 ## Help
 
@@ -106,11 +100,11 @@ Contributors names and contact info
 ## Version History
 
 * 0.0
-    * Coded using MicroCODE Templates, MITxPRO-DockerMERN and www-mcode-mern.
+    * Coded using MicroCODE Templates and MITxPRO-DockerMERN.
 
 ## Future Development
 
-* 0.*
+* 0.1
     * Add microservices--additional Docker Containers--for AUTH, SMS, EMAIL and FILEs.
 
 

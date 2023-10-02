@@ -55,7 +55,7 @@
 name: CI/CD Pipeline for MicroCODE MERN Apps
 #
 env:
-  APP_NAME: badbank  # define manually for now, I want this read from the Project's .env file
+  APP_NAME: mcode  # define manually for now, I want this read from the Project's .env file
 #
 on:
   push:

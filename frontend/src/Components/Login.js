@@ -1,11 +1,11 @@
 // #region  H E A D E R
-// <copyright file="login.js" company="MicroCODE Incorporated">Copyright © 2022 MicroCODE, Inc. Troy, MI</copyright><author>Timothy J. McGuire</author>
+// <copyright file="Login.js" company="MicroCODE Incorporated">Copyright © 2022 MicroCODE, Inc. Troy, MI</copyright><author>Timothy J. McGuire</author>
 // #region  P R E A M B L E
 // #region  D O C U M E N T A T I O N
 /*
  *      Title:    MicroCODE App React Login
- *      Module:   Modules (./login.js)
- *      Project:  MicroCODE App React App
+ *      Module:   Modules (./Login.js)
+ *      Project:  MicroCODE React App (WebApp)
  *      Customer: Internal
  *      Creator:  MicroCODE Incorporated
  *      Date:     June 2022
@@ -23,7 +23,7 @@
  *      DESCRIPTION:
  *      ------------
  *
- *      This module implements the MicroCODE's App React Login.
+ *      This module implements the MicroCODE's React App Login.
  *
  *
  *      REFERENCES:
@@ -64,7 +64,7 @@ import scriptjs from 'scriptjs';
 
 // get our app-wide context
 import {AppContext} from './AppContext';
-import BankCard from './BankCard';
+import AppCard from './AppCard';
 
 // include the Back-End API
 import {api} from '../api/api.js';
@@ -91,8 +91,8 @@ var logSource = path.basename(__filename);
 scriptjs.get('https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js', () =>
 {
     const params = {
-        clientId: 'service.badbank.tjmcode.io',
-        redirectURI: `https://badbank.tjmcode.io:443/account/appleid/notification`,
+        clientId: 'service.app.mcode.com',
+        redirectURI: `https://app.mcode.com:443/account/appleid/notification`,
         scope: 'name email',
     };
     window.AppleID.auth.init(params);
@@ -191,9 +191,6 @@ function Login()
     // #endregion
 
     // #region  E V E N T   H A N D L E R S
-    /*
-     * *_Click() - 'on click' event handlers for UI elements.
-     */
 
     // clears the UI fields for Account creation unconditionally
     function clearForm_Click(e)
@@ -236,7 +233,7 @@ function Login()
                         ctx.setUser(account);  // update current user
                         ctx.setLoggedIn(true);
 
-                        ctx.setPrivileged((account.role === "BANKER") || (account.role === "AUDITOR"));
+                        ctx.setPrivileged((account.role === "ENGINEER") || (account.role === "DEVELOPER"));
 
                         log(`[LOGIN] Account contents: ${JSON.stringify(account)}`, logSource, `warn`);
                         log(`[LOGIN] Account Login succeeded - Email: ${account.email}`, logSource, `success`);
@@ -248,7 +245,7 @@ function Login()
         }
         catch (exception)
         {
-            setStatus(exp(`[LOGIN] Login to Account CRASHED.`, logSource, exception));
+            setStatus(exp(`[LOGIN] Login to Account EXCEPTION.`, logSource, exception));
             setSubmit('Disabled');
             setNeedInput(true);
         }
@@ -281,7 +278,7 @@ function Login()
 
     // OUTPUT the Component's JavaScript Extension (JSX) code...
     return (
-        <BankCard
+        <AppCard
             bgcolor="secondary"
             header="Login"
             width="30rem"

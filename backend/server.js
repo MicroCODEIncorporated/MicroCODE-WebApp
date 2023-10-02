@@ -34,7 +34,7 @@
  *      -----------
  *
  *      1. Starter Code Repository (Front-End and API)
- *         https://github.com/1125f16/badbank
+ *         https://github.com/1125f16/mcode
  *      2. Starter Code Repository (Simple database)
  *         https://github.com/1125f16/littledb
  *         This is a repository that will get you familiar with the process of storing data with the lowdb package.
@@ -60,10 +60,10 @@
  *  Date:         By-Group:   Rev:    Description:
  *
  *  25-Aug-2022   TJM-MCODE  {0001}   Copied from 'Fire Hydrant' project to move React App to MERN Architecture.
- *  14-Oct-2022   TJM-MCODE  {0002}   Added Roles for controlling access to ALL DATA.
+ *  14-Oct-2022   TJM-MCODE  {0002}   Added Roles for controlling access to HISTORY.
  *  15-Oct-2022   TJM-MCODE  {0003}   Added 'Send Money' feature.
  *  17-Oct-2022   TJM-MCODE  {0004}   Fix SEND MONEY by sequencing the DAL Promsises with 'Promise.all()'
- *  17-Oct-2022   TJM-MCODE  {0005}   Added APPLE ID Sign-In - https://badbank.tjmcode.io/backend/account/appleid/notification
+ *  17-Oct-2022   TJM-MCODE  {0005}   Added APPLE ID Sign-In - https://app.mcode.com/backend/account/appleid/notification
  *
  *
  *
@@ -91,8 +91,8 @@
 
 //    localhost:8081 for development
 //    http://45.55.107.145/backend for staging
-//    https://badbank.tjmcode.io/backend for frontend production
-// or https://badbank.tjmcode.io:8081 for backend production
+//    https://app.mcode.com/backend for frontend production
+// or https://app.mcode.com:8081 for backend production
 //
 const APP_PORT = parseInt(`${process.env.APP_BACKEND_PORT}`);
 const APP_URL = `${process.env.APP_SUBDOMAIN}:${APP_PORT}`;
@@ -141,20 +141,23 @@ var logSource = path.basename(__filename);
 {
     account:
     {
-        name        : "",
-        email       : "",
-        password    : "",
-        role        : "",
-        balance     : 0.00,
-        created     : "YYYY-MM-DD HH:MM:SS.mmm"
-        transaction : [ ]
+        name     : "",
+        email    : "",
+        password : "",
+        role     : "",
+        created  : "YYYY-MM-DD HH:MM:SS.mmm"
+        event    : [ ]
     }
 
-    transaction:
+    event:
     {
-        type      : <DEPOSIT, WITHDRAW, BALANCE>
-        amount    : 0.00
-        balance   : 0.00
+        type      : <'CREATE', 'LOGIN', 'LOGOUT'... >
+        data
+        {
+            name1 : value1;
+            name2 : value2;
+            name3 : value3;
+        }
         timestamp : "YYYY-MM-DD HH:MM:SS.mmm"
     }
 }
@@ -234,7 +237,7 @@ app.post(`/account/appleid/notification`, async function (req, res)
     mcode.log(`Apple Request: ${req}`, logSource, `wait`);
 
     const user = await getAppleUserId(req.body.id_token);
-    res.redirect(303, 'https://badbank.tjmcode.io/app?user=${JSON.stringify(req.body.id_token)}');
+    res.redirect(303, 'https://app.mcode.com/app?user=${JSON.stringify(req.body.id_token)}');
 
     // respond to Apple Id requests
     res.send("Response for Apple Id requests...");
@@ -249,15 +252,15 @@ app.post(`/account/appleid/notification`, async function (req, res)
  * @returns {object} account object if successful
  * @returns {string} 401 status with error message if unsucessful
  */
-app.get(`/account/create/:username/:email/:password/:role/:deposit`, function (req, res)
+app.get(`/account/create/:username/:email/:password/:role`, function (req, res)
 {
     mcode.log(`CREATE -- Creating Account for ${req.params.email}`, logSource, `info`);
 
     // Check for existing Account from Database
     dal.findAccount(req.params.email)
-        .then((res_find) =>
+        .then((res_create) =>
         {
-            if (res_find)
+            if (res_create)
             {
                 const find_msg = `CREATE -- Create Account FAILED, account exists for: ${req.params.email}`;
                 mcode.log(find_msg, logSource, `error`);
@@ -265,8 +268,7 @@ app.get(`/account/create/:username/:email/:password/:role/:deposit`, function (r
             }
             else
             {
-                let account = model.accountRecord(req.params.username, req.params.email, req.params.password,
-                    req.params.role, parseFloat(req.params.deposit));
+                let account = model.accountRecord(req.params.username, req.params.email, req.params.password, req.params.role);
 
                 dal.createAccount(account)
                     .then(() =>
@@ -276,7 +278,7 @@ app.get(`/account/create/:username/:email/:password/:role/:deposit`, function (r
                     })
                     .catch((exp_create) =>
                     {
-                        const exp_msg = mcode.exp(`CREATE -- dal.createAccount CRASHED.`, logSource, exp_create);
+                        const exp_msg = mcode.exp(`CREATE -- dal.createAccount EXCEPTION.`, logSource, exp_create);
                         res.status(401).json({error: exp_msg});
                     })
                     .finally(() =>
@@ -285,9 +287,9 @@ app.get(`/account/create/:username/:email/:password/:role/:deposit`, function (r
                     });
             }
         })
-        .catch((exp_find) =>
+        .catch((exp_create) =>
         {
-            res.status(401).json({error: exp_find});
+            res.status(401).json({error: exp_create});
         })
         .finally(() =>
         {
@@ -309,9 +311,9 @@ app.get(`/account/delete/:username/:email/:password`, function (req, res)
 
     // Check for existing Account from Database
     dal.findAccount(req.params.email)
-        .then((res_find) =>
+        .then((res_create) =>
         {
-            if (!res_find)
+            if (!res_create)
             {
                 const find_msg = `DELETE -- Delete Account FAILED, account does not exists for: ${req.params.email}`;
                 mcode.log(find_msg, logSource, `error`);
@@ -329,7 +331,7 @@ app.get(`/account/delete/:username/:email/:password`, function (req, res)
                     })
                     .catch((exp_create) =>
                     {
-                        const exp_msg = mcode.exp(`DELETE -- dal.deleteAccount CRASHED.`, logSource, exp_create);
+                        const exp_msg = mcode.exp(`DELETE -- dal.deleteAccount EXCEPTION.`, logSource, exp_create);
                         res.status(401).json({error: exp_msg});
                     })
                     .finally(() =>
@@ -338,10 +340,10 @@ app.get(`/account/delete/:username/:email/:password`, function (req, res)
                     });
             }
         })
-        .catch((exp_find) =>
+        .catch((exp_create) =>
         {
-            const exp_msg = mcode.exp(`DELETE -- dal.findAccount CRASHED.`, logSource, exp_find);
-            res.status(401).json({error: exp_find});
+            const exp_msg = mcode.exp(`DELETE -- dal.findAccount EXCEPTION.`, logSource, exp_create);
+            res.status(401).json({error: exp_create});
         })
         .finally(() =>
         {
@@ -363,9 +365,9 @@ app.get(`/account/login/:email/:password`, function (req, res)
 
     // Get Account from Database
     dal.findAccount(req.params.email)
-        .then((res_find) =>
+        .then((res_create) =>
         {
-            if (!res_find)
+            if (!res_create)
             {
                 const find_msg = `LOGIN -- Login to Account FAILED, account does not exists for: ${req.params.email}`;
                 mcode.log(find_msg, logSource, `error`);
@@ -373,13 +375,13 @@ app.get(`/account/login/:email/:password`, function (req, res)
             }
             else
             {
-                mcode.log(`LOGIN -- Login to Account SUCCEEDED with ${res_find.email}`, logSource, `success`);
-                res.send(res_find);
+                mcode.log(`LOGIN -- Login to Account SUCCEEDED with ${res_create.email}`, logSource, `success`);
+                res.send(res_create);
             }
         })
-        .catch((exp_find) =>
+        .catch((exp_create) =>
         {
-            const exp_msg = mcode.exp(`LOGIN -- dal.findAccount CRASHED.`, logSource, exp_find);
+            const exp_msg = mcode.exp(`LOGIN -- dal.findAccount EXCEPTION.`, logSource, exp_create);
             res.status(401).json({error: exp_msg});
         })
         .finally(() =>
@@ -389,104 +391,26 @@ app.get(`/account/login/:email/:password`, function (req, res)
 });
 
 /**
- * @func deposit
+ * @func events
  * @memberof server
- * @desc Deposit money to account by email.
- * @api public
- * @returns {object} account object if successful
- * @returns {string} 401 status with error message if unsucessful
- */
-app.get(`/account/deposit/:email/:amount`, function (req, res)
-{
-    mcode.log(`DEPOSIT -- Depositing Funds into Account of ${req.params.email}`, logSource, `info`);
-
-    // Deposit directly into Account in Database
-    dal.depositFunds(req.params.email, req.params.amount)
-        .then((res_deposit) =>
-        {
-            if (!res_deposit)
-            {
-                const deposit_msg = `DEPOSIT -- Login to Account FAILED, account does not exists for: ${req.params.email}`;
-                mcode.log(deposit_msg, logSource, `error`);
-                res.status(401).json({error: deposit_msg});
-            }
-            else
-            {
-                mcode.log(`DEPOSIT -- Successfully deposited User funds, new balance: ${res_deposit.balance}`, logSource, `success`);
-                res.send(res_deposit);
-            }
-        })
-        .catch((exp_deposit) =>
-        {
-            const exp_msg = mcode.exp(`DEPOSIT -- dal.depositFunds CRASHED.`, logSource, exp_deposit);
-            res.status(401).json({error: exp_msg});
-        })
-        .finally(() =>
-        {
-
-        });
-});
-
-/**
- * @func withdraw
- * @memberof server
- * @desc Withdraw money from account by email.
- * @api public
- * @returns {object} account object if successful
- * @returns {string} 401 status with error message if unsucessful
- */
-app.get(`/account/withdraw/:email/:amount`, function (req, res)
-{
-    mcode.log(`WITHDRAW -- Withdrawing Funds from Account of ${req.params.email}`, logSource, `info`);
-
-    // Withdraw directly from Account in Database
-    dal.withdrawFunds(req.params.email, req.params.amount)
-        .then((res_withdraw) =>
-        {
-            if (!res_withdraw)
-            {
-                const withdraw_msg = `WITHDRAW -- Login to Account FAILED, account does not exists for: ${req.params.email}`;
-                mcode.log(withdraw_msg, logSource, `error`);
-                res.status(401).json({error: withdraw_msg});
-            }
-            else
-            {
-                mcode.log(`WITHDRAW -- Successfully withdrew User funds, new balance: ${res_withdraw.balance}`, logSource, `success`);
-                res.send(res_withdraw);
-            }
-        })
-        .catch((exp_withdraw) =>
-        {
-            const exp_msg = mcode.exp(`WITHDRAW -- dal.withdrawFunds CRASHED.`, logSource, exp_withdraw);
-            res.status(401).json({error: exp_msg});
-        })
-        .finally(() =>
-        {
-
-        });
-});
-
-/**
- * @func balance
- * @memberof server
- * @desc Return balance for a specific account.
+ * @desc Returns events for a specific account.
  * @api public
  * @returns {object} accounts data object if successful
  */
-app.get(`/account/balance/:email`, function (req, res)
+app.get(`/account/events/:email`, function (req, res)
 {
-    mcode.log(`BALANCE -- Returning Account Balance for ${req.params.email}`, logSource, `info`);
+    mcode.log(`EVENTS -- Returning Account Events for ${req.params.email}`, logSource, `info`);
 
-    // returns balance from the database
-    dal.accountBalance(req.params.email)
-        .then((res_balance) =>
+    // returns events from the database
+    dal.getAccount(req.params.email)
+        .then((res_events) =>
         {
-            mcode.log(`BALANCE -- Account Balance: $${res_balance.balance}`, logSource, `info`);
-            res.send(res_balance);
+            mcode.log(`EVENTS -- Number of Account Events: ${res_events.log.length}`, logSource, `info`);
+            res.send(res_events);
         })
-        .catch((exp_balance) =>
+        .catch((exp_events) =>
         {
-            const exp_msg = mcode.exp(`BALANCE -- dal.accountBalance CRASHED.`, logSource, exp_balance);
+            const exp_msg = mcode.exp(`EVENTS -- dal.getAccount EXCEPTION.`, logSource, exp_events);
             res.status(401).json({error: exp_msg});
         })
         .finally(() =>
@@ -496,178 +420,27 @@ app.get(`/account/balance/:email`, function (req, res)
 });
 
 /**
- * @func sendMoney
- * @memberof server
- * @desc Sends money from account to another by email.
- * @api public
- * @returns {object} account object if successful
- * @returns {string} 401 status with error message if unsucessful
- */
-app.get(`/account/sendMoney/:email/:amount/:receiver`, function (req, res)
-{
-    mcode.log(`SENDMONEY -- Sending Money from Account of ${req.params.email} to Account of ${req.params.receiver}`, logSource, `info`);
-
-    let sendersAccount = {};  // init until 'Withdraw' gives us the Sender's Account Object
-
-    // 1) Check for receiver in Bad Bank
-    // 2) Attempt Withdraw from User (allow Overdraft to make money LOL, 'Bad Bank')
-    // 3) Deposit the money in other personal Account
-
-    // to seqeunce the Promises creates by the DAL I use an array of the created promises and 'Promise.all()' to sequence them...
-    let sequence = [];
-
-    // Set Step 1) Check for receiver in Bad Bank
-    sequence.push(dal.findAccount(req.params.receiver)
-        .then((res_find) =>
-        {
-            if (!res_find)
-            {
-                const sendMoney_msg = `SENDMONEY -- Receiver doesn't have a App Account, email: ${req.params.receiver}`;
-                mcode.log(sendMoney_msg, logSource, `error`);
-                res.status(401).json({error: sendMoney_msg});
-            }
-        })
-        .catch((exp_find) =>
-        {
-            const exp_msg = mcode.exp(`SENDMONEY -- dal.findAccount CRASHED.`, logSource, exp_find);
-            res.status(401).json({error: exp_find});
-        })
-        .finally(() =>
-        {
-
-        }));
-
-    // Set Step 2) Attempt Withdraw from User (allow Overdraft to make money LOL, 'Bad Bank')
-    sequence.push(dal.withdrawFunds(req.params.email, req.params.amount)
-        .then((res_withdrawMoney) =>
-        {
-            if (!res_withdrawMoney)
-            {
-                const sendMoney_msg = `SENDMONEY -- User access FAILED, account does not exists for: ${req.params.email}`;
-                mcode.log(sendMoney_msg, logSource, `error`);
-                res.status(401).json({error: sendMoney_msg});
-            }
-            else
-            {
-                sendersAccount = res_withdrawMoney;  // hold to return after deposit into Receiver's
-                mcode.log(`SENDMONEY -- Successfully withdrew User funds, new balance: ${res_withdrawMoney.balance}`, logSource, `success`);
-            }
-        })
-        .catch((exp_withdrawMoney) =>
-        {
-            const exp_msg = mcode.exp(`SENDMONEY -- dal.withdrawFunds CRASHED.`, logSource, exp_withdrawMoney);
-            res.status(401).json({error: exp_msg});
-        })
-        .finally(() =>
-        {
-
-        }));
-
-    // Set Step 3) Deposit the money in other personal Account
-    sequence.push(dal.depositFunds(req.params.receiver, req.params.amount)
-        .then((res_depositMoney) =>
-        {
-            if (!res_depositMoney)
-            {
-                const deposit_msg = `SENDMONEY -- Receiver access FAILED, account does not exists for: ${req.params.receiver}`;
-                mcode.log(deposit_msg, logSource, `error`);
-                res.status(401).json({error: deposit_msg});
-            }
-            else
-            {
-                mcode.log(`SENDMONEY -- Successfully deposited User funds, new balance: ${res_depositMoney.balance}`, logSource, `success`);
-            }
-        })
-        .catch((exp_depositMoney) =>
-        {
-            const exp_msg = mcode.exp(`SENDMONEY -- dal.depositFunds CRASHED.`, logSource, exp_depositMoney);
-            res.status(401).json({error: exp_msg});
-        })
-        .finally(() =>
-        {
-
-        }));
-
-    // Now exeute all the DAL transactions in sequence...
-    Promise.all(sequence)
-        .then((result) =>
-        {
-            result.forEach((response) =>
-            {
-                mcode.log(`SENDMONEY -- Successfully deposited User funds, new balance: ${response}`, logSource, `success`);
-            });
-        })
-        .catch((exp_sendMoney) =>
-        {
-            const exp_msg = mcode.exp(`SENDMONEY -- DAL Promise Sequence CRASHED.`, logSource, exp_sendMoney);
-            res.status(401).json({error: exp_msg});
-        })
-        .finally(() =>
-        {
-            if (sendersAccount)
-            {
-                // final response to API -- the original Sender's updated Account
-                res.send(sendersAccount);
-            }
-            else
-            {
-                const exp_msg = mcode.exp(`SENDMONEY -- DAL Promise Sequence FAILED.`, logSource, 'error');
-                res.status(401).json({error: exp_msg});
-            }
-        });
-});
-
-/**
- * @func transactions
- * @memberof server
- * @desc Returns transactions for a specific account.
- * @api public
- * @returns {object} accounts data object if successful
- */
-app.get(`/account/transactions/:email`, function (req, res)
-{
-    mcode.log(`TRANSACTIONS -- Returning Account Transactions for ${req.params.email}`, logSource, `info`);
-
-    // returns transactions from the database
-    dal.accountTransactions(req.params.email)
-        .then((res_transactions) =>
-        {
-            mcode.log(`TRANSACTIONS -- Number of Account Transactions: ${res_transactions.transactions.length}`, logSource, `info`);
-            res.send(res_transactions);
-        })
-        .catch((exp_transactions) =>
-        {
-            const exp_msg = mcode.exp(`TRANSACTIONS -- dal.accountTransactions CRASHED.`, logSource, exp_transactions);
-            res.status(401).json({error: exp_msg});
-        })
-        .finally(() =>
-        {
-
-        });
-});
-
-/**
- * @func allData
+ * @func History
  * @memberof server
  * @desc Returns all data for all accounts.
  * @api public
  * @returns {object} accounts data object if successful
  */
-app.get(`/account/all`, function (req, res)
+app.get(`/account/history`, function (req, res)
 {
-    mcode.log(`ALL DATA -- Returning all Account Data...`, logSource, `info`);
+    mcode.log(`HISTORY -- Returning all Account Data...`, logSource, `info`);
 
     // returns all data in the database
-    dal.allAccounts()
-        .then((res_allAccounts) =>
+    dal.getAccounts()
+        .then((res_history) =>
         {
-            mcode.log(`ALL DATA -- Get data succeeded, number = ${res_allAccounts.length}.`, logSource, `success`);
-            // debug only --- mcode.log(`ALL DATA -- Users: ${JSON.stringify(res_allAccounts)}`, logSource, `info`);
-            res.send(res_allAccounts);
+            mcode.log(`HISTORY -- Get data succeeded, number = ${res_history.length}.`, logSource, `success`);
+            // debug only --- mcode.log(`HISTORY -- Users: ${JSON.stringify(res_history)}`, logSource, `info`);
+            res.send(res_history);
         })
-        .catch((exp_allAccounts) =>
+        .catch((exp_history) =>
         {
-            const exp_msg = mcode.exp(`BALANCE -- dal.allAccounts CRASHED.`, logSource, exp_allAccounts);
+            const exp_msg = mcode.exp(`HISTORY -- dal.getAccounts EXCEPTION.`, logSource, exp_history);
             res.status(401).json({error: exp_msg});
         })
         .finally(() =>

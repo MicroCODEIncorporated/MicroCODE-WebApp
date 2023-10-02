@@ -1,10 +1,10 @@
 // #region  H E A D E R
-// <copyright file="context.js" company="MicroCODE Incorporated">Copyright © 2022 MicroCODE, Inc. Troy, MI</copyright><author>Timothy J. McGuire</author>
+// <copyright file="AppContext.js" company="MicroCODE Incorporated">Copyright © 2022 MicroCODE, Inc. Troy, MI</copyright><author>Timothy J. McGuire</author>
 // #region  P R E A M B L E
 // #region  D O C U M E N T A T I O N
 /*
  *      Title:    MicroCODE App Context
- *      Module:   Modules (./context.js)
+ *      Module:   Modules (./AppContext.js)
  *      Project:  MicroCODE Common Code
  *      Customer: Internal
  *      Creator:  MicroCODE Incorporated

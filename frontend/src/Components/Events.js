@@ -1,11 +1,11 @@
 // #region  H E A D E R
-// <copyright file="balance.js" company="MicroCODE Incorporated">Copyright © 2022 MicroCODE, Inc. Troy, MI</copyright><author>Timothy J. McGuire</author>
+// <copyright file="Events.js" company="MicroCODE Incorporated">Copyright © 2022 MicroCODE, Inc. Troy, MI</copyright><author>Timothy J. McGuire</author>
 // #region  P R E A M B L E
 // #region  D O C U M E N T A T I O N
 /*
- *      Title:    MicroCODE App React Balance
- *      Module:   Modules (./balance.js)
- *      Project:  MicroCODE App React App
+ *      Title:    MicroCODE App React Events
+ *      Module:   Modules (./Events.js)
+ *      Project:  MicroCODE React App (WebApp)
  *      Customer: Internal
  *      Creator:  MicroCODE Incorporated
  *      Date:     June 2022
@@ -23,7 +23,7 @@
  *      DESCRIPTION:
  *      ------------
  *
- *      This module implements the MicroCODE's App React Balance.
+ *      This module implements the MicroCODE's MicroCODE's React App Events.
  *
  *
  *      REFERENCES:
@@ -49,7 +49,7 @@
  *
  *  Date:         By-Group:   Rev:     Description:
  *
- *  02-Jun-2022   TJM-MCODE  {0001}    New module implementing the creation App Balances.
+ *  02-Jun-2022   TJM-MCODE  {0001}    New module implementing the creation Bad Bank Eventss.
  *
  *
  */
@@ -62,13 +62,13 @@
 
 import React from 'react';
 import {AppContext} from './AppContext';
-import BankCard from './BankCard';
+import AppCard from './AppCard';
 
 // include the Back-End API
 import {api} from '../api/api.js';
 
 // include our common MicroCODE Client Library
-import {log, exp, toCurrency} from '../mcodeClient.js';
+import {log, exp, simplifyText} from '../mcodeClient.js';
 
 // get our current file name for logging events
 var path = require('path');
@@ -94,24 +94,24 @@ var logSource = path.basename(__filename);
 // #region  C O M P O N E N T – P U B L I C
 
 /**
- * @func Balance
+ * @func Events
  * @memberof app
- * @desc the App Balance Component.
+ * @desc the React App Events Component.
  * @api public
  * @param {nil} no properties.
  * @returns {JSX} JavaScript Extension (JSX) code representing the current state of the component.
  *
  * @example
  *
- *      Balance();
+ *      Events();
  *
  */
-function Balance()
+function Events()
 {
     // validate PROPS input(s) if required
 
     // initialize STATE and define accessors...
-    const [balance, setBalance] = React.useState(0);
+    const [events, setEvents] = React.useState(0);
     const [status, setStatus] = React.useState('');
 
     // access CONTEXT for reference...
@@ -119,7 +119,7 @@ function Balance()
 
     // #region  P R I V A T E   F U N C T I O N S
 
-    // get the Account Balance once from Database on load
+    // useEffect with an empty dependency array
     React.useEffect(() =>
     {
         if (ctx.LoggedIn)
@@ -128,58 +128,88 @@ function Balance()
             {
                 try
                 {
-                    // Get Account Balance in Database
-                    api.balance(ctx.User.email)
+                    // Get Account Events in Database
+                    api.events(ctx.User.email)
                         .then((account) =>
                         {
                             if (!account)
                             {
-                                setStatus(log(`[BALANCE] failed, check for an account with: ${ctx.User.email}`, logSource, `error`));
+                                setStatus(log(`[EVENTS] failed, check for an account with: ${ctx.User.email}`, logSource, `error`));
                             }
                             else
                             {
-                                setBalance(account.balance);
-                                log(`[BALANCE] Account: ${JSON.stringify(account)}`, logSource, `warn`);
-                                log(`[BALANCE] Account Balance succeeded - Email: ${account.email}`, logSource, `success`);
+                                setEvents(account.log);
+                                log(`[EVENTS] Account: ${JSON.stringify(account)}`, logSource, `warn`);
+                                log(`[EVENTS] Account Events succeeded - Email: ${account.email}`, logSource, `success`);
                                 setStatus(``);
                             }
                         });
                 }
                 catch (exception)
                 {
-                    setStatus(exp(`[BALANCE] CRASHED - User: ${ctx.User.email}`, logSource, exception));
+                    setStatus(exp(`[EVENTS] EXCEPTION - User: ${ctx.User.email}`, logSource, exception));
                 }
 
             })();
         }
         else
         {
-            setStatus(log(`[BALANCE] Must be logged in to get Balance...`, logSource, `warn`));
-            setBalance(0);
+            setStatus(log(`[EVENTS] Must be logged in to get Events...`, logSource, `warn`));
+            setEvents(0);
         }
 
     }, [ctx.LoggedIn, ctx.User.email]);
 
+    // Build an HTML List of all our User Account Events
+    function buildEventsList()
+    {
+        const eventArray = [];
+        var key = 0;
+
+        if (events)
+        {
+            log(`[EVENTS] Formatting Events...`, logSource, `info`);
+
+            // remove MongoDB IDs before using in App Context
+            events.forEach(element =>
+            {
+                key++;
+
+                delete element["_id"];
+
+                // pick up the Events array, convert to JSX
+                eventArray.push(<li key={key} className="list-group-item">{simplifyText(JSON.stringify(element))}</li>);
+            });
+        }
+        else
+        {
+            log(`[EVENTS] Failed to build Event list, no 'Account' data`, logSource, `warn`);
+            setEvents([]);
+
+        }
+        return eventArray;
+    };
+
     // #endregion
 
     // #region  E V E N T   H A N D L E R S
-    /*
-     * *_Click() - 'on click' event handlers for UI elements.
-     */
 
     // OUTPUT the Component's JavaScript Extension (JSX) code...
     return (
-        <BankCard
+        <AppCard
             bgcolor="info"
-            header="Balance"
-            width="30rem"
+            header="Events"
+            width="60rem"
             status={status}
             body={(
-                <form>
-                    Current Balance<br />
-                    <input type="text" readOnly={true} className="form-control" id="balance"
-                        placeholder="Current balance" value={toCurrency(balance)} /><br />
-                </form>
+                <>
+                    <h5>Account Events</h5>
+                    <br />
+                    <ul className="list-group">
+                        {/* the rest of the list is built from the Events array returned from the Back-End */}
+                        {buildEventsList()}
+                    </ul>
+                </>
             )}
         />
     );
@@ -189,7 +219,7 @@ function Balance()
 
 // #region  C O M P O N E N T - E X P O R T S
 
-export default Balance;
+export default Events;
 
 // #endregion
 

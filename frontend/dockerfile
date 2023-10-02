@@ -19,6 +19,13 @@
 #
 #      This module implements the Dockerization of a MERN Frontend/Client.
 #
+#      Defintion Precedence:
+#      --------------------
+#      1) docker-compose.yaml
+#      2) * Dockerfile *
+#      3) .env
+#      4) .env.development / .env.production
+#
 #
 #      REFERENCES:
 #      -----------
@@ -36,6 +43,7 @@
 #  13-Aug-2022   TJM-MCODE  {0001}    New file for learning DOCKER-ization.
 #  27-Sep-2022   TJM-MCODE  {0002}    Updated to use .env APP_* variables.
 #  06-Oct-2022   TJM-MCODE  {0003}    Added in '.env.production' ENV VARs as defaults to be overriden by the 'docker-compose.yml'
+#  01-Oct-2023   TJM-MCODE  {0004}    Moved to 'mcode.com' as the default host for all our Web Apps.
 #
 #
 #
@@ -43,7 +51,7 @@
 FROM node:14-slim
 #
 # signature
-LABEL ${APP_NAME:-badbank}.frontend.constructor=${APP_CONSTRUCTOR:-tmcguire@mcode.com}
+LABEL ${APP_NAME:-webapp}.frontend.constructor=${APP_CONSTRUCTOR:-tmcguire@mcode.com}
 #
 # default all required ENVIRONMENT VARIABLES to '.env.production' values
 # these of overridden by the 'Docker-Compose.yaml' during development
@@ -53,23 +61,23 @@ ENV \
     #
     # APP_DOMAIN - the name of the domain hosting the App used throughout the build and the JS code.
     # tjmcode.io, controlnet.io, laddersnet.io, or localhost for development
-    APP_DOMAIN=tjmcode.io \
+    APP_DOMAIN=mcode.com \
     #
     # APP_SUBDOMAIN - the name of the sub-doomain hosting the App used throughout the build and the JS code.
     # ${APP_NAME}.${APP_DOMAIN} or localhost for development
-    APP_SUBDOMAIN=badbank.tjmcode.io \
+    APP_SUBDOMAIN=${APP_NAME}.${APP_DOMAIN} \
     #
     # REACT_APP_SUBDOMAIN - the same name made accessible in the React App Front-end
     # should be equal to ${APP_SUBDOMAIN}
-    REACT_APP_SUBDOMAIN=badbank.tjmcode.io \
+    REACT_APP_SUBDOMAIN=${APP_NAME}.${APP_DOMAIN} \
     #
     # REACT_APP_BACKEND_PORT - taken from the standard .env file into a REACT_APP_* var for the Front-End
     # should be equal to ${APP_BACKEND_PORT}
-    REACT_APP_BACKEND_PORT=8080 \
+    REACT_APP_BACKEND_PORT=${APP_BACKEND_PORT:-8080} \
     #
     # REACT_APP_BACKEND_URL - taken from the standard .env file into a REACT_APP_* var for the Front-End
     # should be equal to ${APP_BACKEND_URL}
-    REACT_APP_BACKEND_URL=https://badbank.tjmcode.io:8080
+    REACT_APP_BACKEND_URL=https://${APP_NAME}.${APP_DOMAIN}:${REACT_APP_BACKEND_PORT}
 #
 # set container’s working directory
 WORKDIR /app
@@ -87,3 +95,4 @@ COPY . .
 EXPOSE ${APP_FRONTEND_PORT:-3000}
 #
 CMD ["npm", "start"]
+#

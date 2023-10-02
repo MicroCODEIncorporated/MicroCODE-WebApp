@@ -23,7 +23,7 @@
  *      DESCRIPTION:
  *      ------------
  *
- *      This module implements the MicroCODE`s Common JavaScript Client/Front-End functions.
+ *      This module implements the MicroCODE's Common JavaScript Client/Front-End functions.
  *
  *
  *      REFERENCES:
@@ -336,6 +336,7 @@ function timeStamp()
 function simplifyText(textToSimplify)
 {
     let simplifiedText = "";
+    let inValue = false;
 
     for (let i = 0; i < textToSimplify.length; i++)
     {
@@ -345,15 +346,22 @@ function simplifyText(textToSimplify)
             case '}':
             case '[':
             case ']':
+                inValue = false;
+                break;
             case '"':
                 break;
             case ':':
                 simplifiedText += textToSimplify[i];
-                simplifiedText += ' ';
+                if (!inValue)
+                {
+                    simplifiedText += ' ';
+                }
+                inValue = true;
                 break;
             case ',':
                 simplifiedText += textToSimplify[i];
                 simplifiedText += ' ';
+                inValue = false;
                 break;
             default:
                 simplifiedText += textToSimplify[i];
@@ -376,8 +384,8 @@ function simplifyText(textToSimplify)
 function logifyText(textToLogify)
 {
     let inJson = false;
+    let inValue = false;
     let logifiedText = ``;
-    let firstColon = true;
     let tabStop = 0;
     let lineEmpty = false;  // to start of a new line
 
@@ -417,12 +425,14 @@ function logifyText(textToLogify)
                 case `{`:
                     logifiedText += indent() + `{`;
                     lineEmpty = false;
+                    inValue = false;
                     tabStop++;
                     logifiedText += indent();
                     break;
                 case `[`:
                     logifiedText += indent() + `[`;
                     lineEmpty = false;
+                    inValue = false;
                     tabStop++;
                     logifiedText += indent();
                     break;
@@ -430,33 +440,29 @@ function logifyText(textToLogify)
                     tabStop--;
                     inJson = (tabStop <= 0) ? false : true;  // closed opening '{'
                     logifiedText += indent() + `}`;
-                    firstColon = true;
+                    inValue = false;
                     lineEmpty = false;
                     break;
                 case `]`:
                     tabStop--;
                     logifiedText += indent() + `]`;
-                    firstColon = true;
                     lineEmpty = false;
+                    inValue = false;
                     break;
                 case `,`:
                     logifiedText += `,` + indent();
-                    firstColon = true;
+                    inValue = false;
                     lineEmpty = true;
                     break;
                 case `"`:
                     break;
                 case `:`:
-                    if (firstColon)
+                    logifiedText += textToLogify[i];
+                    if (!inValue)
                     {
-                        logifiedText += textToLogify[i];
-                        logifiedText += ` `;
-                        firstColon = false;
+                        logifiedText += ` `;  // space between name: value, but don't touch value text
                     }
-                    else
-                    {
-                        logifiedText += textToLogify[i];
-                    }
+                    inValue = true;
                     break;
                 case ` `:
                     logifiedText += textToLogify[i];

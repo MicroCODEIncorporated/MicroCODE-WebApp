@@ -329,6 +329,7 @@ methods.timeStamp = function ()
 methods.simplifyText = function (textToSimplify)
 {
     let simplifiedText = "";
+    let inValue = false;
 
     for (let i = 0; i < textToSimplify.length; i++)
     {
@@ -338,11 +339,22 @@ methods.simplifyText = function (textToSimplify)
             case '}':
             case '[':
             case ']':
+                inValue = false;
+                break;
             case '"':
+                break;
+            case ':':
+                simplifiedText += textToSimplify[i];
+                if (!inValue)
+                {
+                    simplifiedText += ' ';
+                }
+                inValue = true;
                 break;
             case ',':
                 simplifiedText += textToSimplify[i];
                 simplifiedText += ' ';
+                inValue = false;
                 break;
             default:
                 simplifiedText += textToSimplify[i];
@@ -352,6 +364,7 @@ methods.simplifyText = function (textToSimplify)
 
     return simplifiedText;
 };
+
 
 /**
  * @method logifyText
@@ -365,8 +378,8 @@ methods.simplifyText = function (textToSimplify)
 methods.logifyText = function (textToLogify)
 {
     let inJson = false;
+    let inValue = false;
     let logifiedText = ``;
-    let firstColon = true;
     let tabStop = 0;
     let lineEmpty = false;  // to start of a new line
 
@@ -406,12 +419,14 @@ methods.logifyText = function (textToLogify)
                 case `{`:
                     logifiedText += indent() + `{`;
                     lineEmpty = false;
+                    inValue = false;
                     tabStop++;
                     logifiedText += indent();
                     break;
                 case `[`:
                     logifiedText += indent() + `[`;
                     lineEmpty = false;
+                    inValue = false;
                     tabStop++;
                     logifiedText += indent();
                     break;
@@ -419,33 +434,29 @@ methods.logifyText = function (textToLogify)
                     tabStop--;
                     inJson = (tabStop <= 0) ? false : true;  // closed opening '{'
                     logifiedText += indent() + `}`;
-                    firstColon = true;
+                    inValue = false;
                     lineEmpty = false;
                     break;
                 case `]`:
                     tabStop--;
                     logifiedText += indent() + `]`;
-                    firstColon = true;
                     lineEmpty = false;
+                    inValue = false;
                     break;
                 case `,`:
                     logifiedText += `,` + indent();
-                    firstColon = true;
                     lineEmpty = true;
+                    inValue = false;
                     break;
                 case `"`:
                     break;
                 case `:`:
-                    if (firstColon)
+                    logifiedText += textToLogify[i];
+                    if (!inValue)
                     {
-                        logifiedText += textToLogify[i];
-                        logifiedText += ` `;
-                        firstColon = false;
+                        logifiedText += ` `;  // space between name: value, but don't touch value text
                     }
-                    else
-                    {
-                        logifiedText += textToLogify[i];
-                    }
+                    inValue = true;
                     break;
                 case ` `:
                     logifiedText += textToLogify[i];

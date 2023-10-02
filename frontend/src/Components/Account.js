@@ -1,11 +1,11 @@
 // #region  H E A D E R
-// <copyright file="account.js" company="MicroCODE Incorporated">Copyright © 2022 MicroCODE, Inc. Troy, MI</copyright><author>Timothy J. McGuire</author>
+// <copyright file="Account.js" company="MicroCODE Incorporated">Copyright © 2022 MicroCODE, Inc. Troy, MI</copyright><author>Timothy J. McGuire</author>
 // #region  P R E A M B L E
 // #region  D O C U M E N T A T I O N
 /*
- *      Title:    MicroCODE App React Account
- *      Module:   Modules (./account.js)
- *      Project:  MicroCODE App React App
+ *      Title:    MicroCODE App React User Account
+ *      Module:   Components (./Account.js)
+ *      Project:  MicroCODE Web React App (WebApp)
  *      Customer: Internal
  *      Creator:  MicroCODE Incorporated
  *      Date:     June 2022
@@ -67,7 +67,7 @@
 // #region  I M P O R T S
 
 import React, {useContext, useState} from 'react';
-import BankCard from './BankCard';
+import AppCard from './AppCard';
 
 // get our app-wide context
 import {AppContext} from './AppContext';
@@ -91,7 +91,6 @@ var logSource = path.basename(__filename);
 // #region  C O N S T A N T S
 
 const MINIMUM_PASSWORD_LENGTH = 8;
-const MINIMUM_OPENING_DEPOSIT = 100;
 
 // #region  C O N S T A N T S
 
@@ -133,8 +132,7 @@ function Account()
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [role, setRole] = useState('CUSTOMER');
-    const [balance, setBalance] = useState(0);
+    const [role, setRole] = useState('MANAGER');
 
     // access CONTEXT for reference...
     const ctx = useContext(AppContext);
@@ -177,21 +175,11 @@ function Account()
         {
             let requestedRole = field.toUpperCase();
 
-            if ((requestedRole !== "BANKER")
-                && (requestedRole !== "CUSTOMER")
-                && (requestedRole !== "AUDITOR"))
+            if ((requestedRole !== "ENGINEER")
+             && (requestedRole !== "MANAGER")
+             && (requestedRole !== "DEVELOPER"))
             {
-                setStatus(`error: Role must be one of: BANKER, CUSTOMER, AUDITOR.`);
-                setSubmit('Disabled');
-                return false;
-            }
-        }
-
-        if (label === "balance")
-        {
-            if (field < MINIMUM_OPENING_DEPOSIT)
-            {
-                setStatus(`warn: Opening deposit is less than minimum.`);
+                setStatus(`error: Role must be one of: ENGINEER, MANAGER, DEVELOPER.`);
                 setSubmit('Disabled');
                 return false;
             }
@@ -208,8 +196,6 @@ function Account()
         if (!validate(username, 'username')) return false;
         if (!validate(email, 'email')) return false;
         if (!validate(password, 'password')) return false;
-        if (!validate(balance, 'balance')) return false;
-        if (parseInt(balance) < MINIMUM_OPENING_DEPOSIT) return false;
 
         setSubmit('');
         setStatus('');
@@ -239,8 +225,7 @@ function Account()
         setUsername('');
         setEmail('');
         setPassword('');
-        setRole('CUSTOMER');
-        setBalance('');
+        setRole('MANAGER');
 
         setSubmit('Disabled');
     };
@@ -248,9 +233,6 @@ function Account()
     // #endregion
 
     // #region  E V E N T   H A N D L E R S
-    /*
-     * *_Click() - 'on click' event handlers for UI elements.
-     */
 
     // clears the UI fields for Account creation unconditionally
     function clearForm_Click(e)
@@ -281,12 +263,12 @@ function Account()
         try
         {
             // Create Account in Database
-            api.create(username, email, password, role, balance)
+            api.create(username, email, password, role)
                 .then((account) =>
                 {
                     if (!account)
                     {
-                        setStatus(log(`[ACCOUNT] Create Account failed, ${email} is already used.`, logSource, `error`));
+                        setStatus(log(`[ACCOUNT] Create Account failed, ${email} may be already used.`, logSource, `error`));
                         setNeedInput(true);
                     }
                     else
@@ -296,7 +278,7 @@ function Account()
                         ctx.setUser(account);  // update current user
                         ctx.setLoggedIn(true);
 
-                        ctx.setPrivileged((account.role === "BANKER") || (account.role === "AUDITOR"));
+                        ctx.setPrivileged((account.role === "ENGINEER") || (account.role === "DEVELOPER"));
 
                         setStatus(log(`[ACCOUNT] Create succeeded - User: ${account.email}`, logSource, `success`));
                         setNeedInput(false);
@@ -345,7 +327,6 @@ function Account()
                         setUsername(``);
                         setEmail(``);
                         setPassword(``);
-                        setBalance(0);
 
                         ctx.setUser({});
                         ctx.setLoggedIn(false);
@@ -354,7 +335,7 @@ function Account()
         }
         catch (exception)
         {
-            setStatus(exp(`[ACCOUNT] Delete Account CRASHED - User: ${email}`, logSource, exception));
+            setStatus(exp(`[ACCOUNT] Delete Account EXCEPTION - User: ${email}`, logSource, exception));
             setNeedInput(true);
             setSubmit('Disabled');
         }
@@ -371,7 +352,7 @@ function Account()
 
     // OUTPUT the Component's JavaScript Extension (JSX) code...
     return (
-        <BankCard
+        <AppCard
             bgcolor="primary"
             header="Account"
             width="30rem"
@@ -410,22 +391,12 @@ function Account()
 
                     Account Type<br />
                     <input type="role" autoComplete="new-role" required={true} className="form-control" id="role"
-                        placeholder="Enter BANKER, CUSTOMER, or AUDITOR" value={role} onChange={e =>
+                        placeholder="Enter ENGINEER, MANAGER, or DEVELOPER" value={role} onChange={e =>
                         {
                             setSubmit('');
                             setStatus('');
                             setRole(e.currentTarget.value.toUpperCase());
                             validate(e.currentTarget.value, 'role');
-                        }} /><br />
-
-                    Initial Deposit<br />
-                    <input type="input" autoComplete="new-deposit" required={true} className="form-control" id="balance"
-                        placeholder="Initial balance ($100 min.)" value={balance} onChange={e =>
-                        {
-                            setSubmit('');
-                            setStatus('');
-                            setBalance(e.currentTarget.value);
-                            validate(e.currentTarget.value, 'balance');
                         }} /><br />
 
                     <button type="button" className="btn btn-light" onClick={clearForm_Click}>Clear</button>

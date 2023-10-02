@@ -5,7 +5,7 @@
 /*
  *      Title:    MicroCODE App 3-Tier App - FRONT-END
  *      Module:   Modules (./index.js)
- *      Project:  MicroCODE 3-Tier MERN App 'BadBank'
+ *      Project:  MicroCODE 3-Tier MERN App 'Web App'
  *      Customer: Internal+MIT xPRO Course
  *      Creator:  MicroCODE Incorporated
  *      Date:     October 2022
@@ -25,7 +25,7 @@
  *
  *      This module implements the MicroCODE's App React App Entry Point.
  *      This started with MicroCODE's JavaScript Template Class for 'frontend\client'
- *      to implement the template MERN 'BadBank' project.
+ *      to implement the template MERN 'Web App' project.
  *
  *      This implements the Client-side, the 'FRONT-END'.
  *

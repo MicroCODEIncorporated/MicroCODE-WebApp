@@ -1,11 +1,11 @@
 // #region  H E A D E R
-// <copyright file="navbar.js" company="MicroCODE Incorporated">Copyright © 2022 MicroCODE, Inc. Troy, MI</copyright><author>Timothy J. McGuire</author>
+// <copyright file="NavBar.js" company="MicroCODE Incorporated">Copyright © 2022 MicroCODE, Inc. Troy, MI</copyright><author>Timothy J. McGuire</author>
 // #region  P R E A M B L E
 // #region  D O C U M E N T A T I O N
 /*
- *      Title:    MicroCODE App React Nav Bar
- *      Module:   Modules (./navbar.js)
- *      Project:  MicroCODE App React App
+ *      Title:    MicroCODE React App Nav Bar
+ *      Module:   Modules (./NavBar.js)
+ *      Project:  MicroCODE Web React App (WebApp)
  *      Customer: Internal
  *      Creator:  MicroCODE Incorporated
  *      Date:     June 2, 2022
@@ -127,7 +127,7 @@ function NavBar()
     return (
         <>
             <nav className="navbar navbar-expand-lg navbar-light bg-light" onClick={forceUpdate}>
-                <a className="navbar-brand" tooltip="Return to bank home page" href="#/">BadBank</a>
+                <a className="navbar-brand" tooltip="Return to bank home page" href="#/">MicroCODE</a>
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarId" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
@@ -137,7 +137,7 @@ function NavBar()
                             {!ctx.LoggedIn ? (
                                 <a className="nav-link" tooltip="Create one or more accounts" href="#/account/" aria-disabled="false">Account(s)</a>
                             ) : (
-                                <a className="nav-link disabled" tooltip="Log out to create new account(s)." href="#/account/" aria-disabled="true">Account(s)</a>
+                                <a className="nav-link disabled" tooltip="Log out to create new account(s)" href="#/account/" aria-disabled="true">Account(s)</a>
                             )}
                         </li>
                         <li className="nav-item">
@@ -145,44 +145,16 @@ function NavBar()
                         </li>
                         <li className="nav-item">
                             {!ctx.LoggedIn ? (
-                                <a className="nav-link disabled" tooltip="Log in to make deposits" href="#/deposit/" aria-disabled="true">Deposit</a>
+                                <a className="nav-link disabled" tooltip="Log in to view events" href="#/events/" aria-disabled="true">Events</a>
                             ) : (
-                                <a className="nav-link" tooltip="Deposit funds into your account" href="#/deposit/" aria-disabled="false">Deposit</a>
-                            )}
-                        </li>
-                        <li className="nav-item">
-                            {!ctx.LoggedIn ? (
-                                <a className="nav-link disabled" tooltip="Log in to make withdraws" href="#/withdraw/" aria-disabled="true">Withdraw</a>
-                            ) : (
-                                <a className="nav-link" tooltip="Withdraw funds from your account" href="#/withdraw/" aria-disabled="true">Withdraw</a>
-                            )}
-                        </li>
-                        <li className="nav-item">
-                            {!ctx.LoggedIn ? (
-                                <a className="nav-link disabled" tooltip="Log in to check balance" href="#/balance/" aria-disabled="true">Balance</a>
-                            ) : (
-                                <a className="nav-link" tooltip="Check Balance in your account" href="#/balance/" aria-disabled="true">Balance</a>
-                            )}
-                        </li>
-                        <li className="nav-item">
-                            {!ctx.LoggedIn ? (
-                                <a className="nav-link disabled" tooltip="Log in to send money" href="#/sendMoney/" aria-disabled="true">Send Money</a>
-                            ) : (
-                                <a className="nav-link" tooltip="Send money to another user" href="#/sendMoney/" aria-disabled="true">Send Money</a>
-                            )}
-                        </li>
-                        <li className="nav-item">
-                            {!ctx.LoggedIn ? (
-                                <a className="nav-link disabled" tooltip="Log in to view transactions" href="#/transactions/" aria-disabled="true">Transactions</a>
-                            ) : (
-                                <a className="nav-link" tooltip="View Transactions on your account" href="#/transactions/" aria-disabled="true">Transactions</a>
+                                <a className="nav-link" tooltip="View Events of your account" href="#/events/" aria-disabled="true">Events</a>
                             )}
                         </li>
                         <li className="nav-item">
                             {(ctx.LoggedIn && ctx.Privileged) ? (
-                                <a className="nav-link" tooltip="Check all bank accounts" href="#/alldata/" aria-disabled="true">All Data</a>
+                                <a className="nav-link" tooltip="Check history of all accounts" href="#/history/" aria-disabled="true">History</a>
                             ) : (
-                                <a className="nav-link disabled" tooltip="Log as BANKER to view" href="#/alldata/" aria-disabled="true">All Data</a>
+                                <a className="nav-link disabled" tooltip="Log as DEVELOPER to view" href="#/history/" aria-disabled="true">History</a>
                             )}
                         </li>
                         <li className="nav-item">

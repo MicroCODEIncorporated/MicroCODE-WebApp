@@ -1,11 +1,11 @@
 // #region  H E A D E R
-// <copyright file="home.js" company="MicroCODE Incorporated">Copyright © 2022 MicroCODE, Inc. Troy, MI</copyright><author>Timothy J. McGuire</author>
+// <copyright file="Home.js" company="MicroCODE Incorporated">Copyright © 2022 MicroCODE, Inc. Troy, MI</copyright><author>Timothy J. McGuire</author>
 // #region  P R E A M B L E
 // #region  D O C U M E N T A T I O N
 /*
  *      Title:    MicroCODE App React Home
- *      Module:   Modules (./home.js)
- *      Project:  MicroCODE App React App
+ *      Module:   Modules (./Home.js)
+ *      Project:  MicroCODE Web React App (WebApp)
  *      Customer: Internal
  *      Creator:  MicroCODE Incorporated
  *      Date:     June 2022
@@ -59,7 +59,7 @@
 // #region  I M P O R T S
 
 import React from 'react';
-import BankCard from './BankCard';
+import AppCard from './AppCard';
 import logo from '../logo.svg';
 
 // #endregion
@@ -85,7 +85,7 @@ import logo from '../logo.svg';
 /**
  * @func Home
  * @memberof app
- * @desc controls a user logging into their App Account.
+ * @desc Controls a user logging into their App Account.
  * @api public
  * @param {nil} no properties.
  * @returns {JSX} JavaScript Extension (JSX) code representing the current state of the component.
@@ -108,9 +108,6 @@ function Home()
     // #endregion
 
     // #region  E V E N T   H A N D L E R S
-    /*
-     * *_Click() - 'on click' event handlers for UI elements.
-     */
 
     // #endregion
 
@@ -118,7 +115,7 @@ function Home()
 
     // OUTPUT the Component's JavaScript Extension (JSX) code...
     return (
-        <BankCard
+        <AppCard
             txtcolor="black"
             header="MicroCODE's Web App"
             width="30rem"

@@ -4,7 +4,7 @@
 // #region  D O C U M E N T A T I O N
 /*
  *      Title:    App BACK-END -- Database Abstraction Layer (DAL)
- *      Module:   index (badbank:dal.js)
+ *      Module:   index (mcode:dal.js)
  *      Project:  MicroCODE Website 'App'
  *      Customer: Internal
  *      Creator:  MicroCODE Incorporated
@@ -33,7 +33,7 @@
  *      -----------
  *
  *      1.  Starter Code Repository (Front end and API)
- *          https://github.com/1125f16/badbank
+ *          https://github.com/1125f16/mcode
  *
  *      2.  Starter Code Repository (Simple database)
  *          https://github.com/1125f16/littledb
@@ -97,7 +97,7 @@ const logSource = path.basename(__filename);
 
 // for running native on local machine
 // const DB_URL = 'mongodb://localhost:2702x/appname';
-// const DB_URL = 'mongodb://appname.tjmcode.io:2702x/appname';
+// const DB_URL = 'mongodb://appname.mcode.com:2702x/appname';
 
 // for running in a Docker Container that's running a HOST named "mongo"
 // NOTE: This "mongo" is *not* the Docker Container Name!
@@ -106,7 +106,6 @@ const logSource = path.basename(__filename);
 //*const DB_URL = `mongodb://0.0.0.0:27021/${process.env.APP_NAME}`;
 //*const DB_URL = `mongodb://mongo:${process.env.APP_DATABASE_PORT}/${process.env.APP_NAME}-database`;
 const DB_URL = `mongodb://${process.env.APP_NAME}-database:${process.env.APP_DATABASE_PORT}/${process.env.APP_NAME}`;
-
 const DB_NAME = `${process.env.APP_DATABASE_NAME}`;
 
 // #endregion
@@ -162,7 +161,7 @@ MongoClient.connect(DB_URL, {useUnifiedTopology: true}, (err, client) =>
     }
     catch (exception)
     {
-        mcode.exp(`DAL: init - Database Connection CRASHED, \r\n\x1b[35m           MongoDB Error: ${err}`, logSource, exception);
+        mcode.exp(`DAL: init - Database Connection EXCEPTION, \r\n\x1b[35m           MongoDB Error: ${err}`, logSource, exception);
     }
 });
 
@@ -199,7 +198,7 @@ function createAccount(account)
             })
             .catch((exp_insert) =>
             {
-                mcode.exp(`DAL: createAccount - .insertOne CRASHED with Account: [${account}]`, logSource, exp_insert);
+                mcode.exp(`DAL: createAccount - .insertOne EXCEPTION with Account: [${account}]`, logSource, exp_insert);
                 reject(exp_insert);
             })
             .finally(() =>
@@ -236,272 +235,8 @@ function deleteAccount(account)
             })
             .catch((exp_remove) =>
             {
-                mcode.exp(`DAL: deleteAccount - .deleteMany CRASHED with Account: [${account}]`, logSource, exp_remove);
+                mcode.exp(`DAL: deleteAccount - .deleteMany EXCEPTION with Account: [${account}]`, logSource, exp_remove);
                 reject(exp_remove);
-            })
-            .finally(() =>
-            {
-
-            });
-    });
-};
-
-/**
- * @func depositFunds
- * @desc Deposit funds into Account.
- * @api public
- * @memberof dal
- * @param {string} email User's email account - UNIQUE KEY.
- * @param {float} amount New funds for account - FLOATING POINT.
- * @returns {object} current data for Account from DB.
- *
- * @example
- *
- *      depositFunds('pparker@mit.edu', 100.00);
- *
- */
-function depositFunds(email, amount)
-{
-    return new Promise(async (resolve, reject) =>
-    {
-        db.collection('Accounts').findOne({"email": email})
-            .then((res_find) =>
-            {
-                mcode.log(`DAL: depositFunds - Depositing $${amount} into ${res_find.username} account.`, logSource, `info`);
-
-                // Add deposit and create a TRANSACTION for it
-                res_find.balance = mcode.roundToCents(parseFloat(res_find.balance) + parseFloat(amount));
-                res_find.transactions.push(model.transactionRecord("DEPOSIT", amount, res_find.balance));
-
-                db.collection('Accounts')
-                    .updateOne({"email": email}, {$set: {balance: res_find.balance, transactions: res_find.transactions}})
-                    .then((res_update) =>
-                    {
-                        mcode.log(`DAL: depositFunds - MongoDB res: ${JSON.stringify(res_update)}`, logSource, `info`);
-
-                        // return the updated RECORD, *not* the .updateOne RESPONSE from MongoDB
-                        resolve(res_find);
-                    })
-                    .catch((exp_update) =>
-                    {
-                        mcode.exp(`DAL: depositFunds - .updateOne handling CRASHED with ${account}`, logSource, exp_update);
-                        reject(exp_update);
-                    })
-                    .finally(() =>
-                    {
-
-                    });
-            })
-            .catch((exp_find) =>
-            {
-                mcode.exp(`DAL: depositFunds - .findOne CRASHED for [${email}]`, logSource, exp_find);
-                reject(exp_find);
-            })
-            .finally(() =>
-            {
-
-            });
-    });
-};
-
-/**
- * @func withdrawFunds
- * @desc Withdraw funds from Account.
- * @api public
- * @memberof dal
- * @param {string} email User's email account - UNIQUE KEY.
- * @param {float} amount Funds taken from account - FLOATING POINT.
- * @returns {object} current data for Account from DB.
- *
- * @example
- *
- *      withdrawFunds('pparker@mit.edu', 100.00);
- *
- */
-function withdrawFunds(email, amount)
-{
-    return new Promise(async (resolve, reject) =>
-    {
-        db.collection('Accounts').findOne({"email": email})
-            .then((res_find) =>
-            {
-                mcode.log(`DAL: withdrawFunds - Depositing $${amount} into ${res_find.username} account.`, logSource, `info`);
-
-                // Add withdraw and create a TRANSACTION for it
-                res_find.balance = mcode.roundToCents(parseFloat(res_find.balance) - parseFloat(amount));
-                res_find.transactions.push(model.transactionRecord("WITHDRAW", amount, res_find.balance));
-
-                db.collection('Accounts')
-                    .updateOne({"email": email}, {$set: {balance: res_find.balance, transactions: res_find.transactions}})
-                    .then((res_update) =>
-                    {
-                        mcode.log(`DAL: withdrawFunds - MongoDB res: ${JSON.stringify(res_update)}`, logSource, `info`);
-
-                        // check for OVERDRAFT and generate a seocnd transaction if required (App always let's you overdraw!
-                        if (res_find.balance < 0)
-                        {
-                            // Add withdraw and create a TRANSACTION for it
-                            res_find.balance = mcode.roundToCents(parseFloat(res_find.balance) - parseFloat(35));
-                            res_find.transactions.push(model.transactionRecord("OVERDRAFT", 35, res_find.balance));
-
-                            db.collection('Accounts')
-                                .updateOne({"email": email}, {$set: {balance: res_find.balance, transactions: res_find.transactions}})
-                                .then((res_overdraft) =>
-                                {
-                                    mcode.log(`DAL: withdrawFunds - MongoDB OVERDRAFT res: ${JSON.stringify(res_overdraft)}`, logSource, `info`);
-
-                                    // return the updated RECORD, *not* the .updateOne RESPONSE from MongoDB
-                                    resolve(res_find);
-                                })
-                                .catch((exp_overdraft) =>
-                                {
-                                    mcode.exp(`DAL: withdrawFunds - .updateOne OVERDRAFT CRASHED with ${account}`, logSource, exp_overdraft);
-                                    reject(exp_overdraft);
-                                })
-                                .finally(() =>
-                                {
-
-                                });
-                        }
-
-                        // return the updated RECORD, *not* the .updateOne RESPONSE from MongoDB
-                        resolve(res_find);
-                    })
-                    .catch((exp_update) =>
-                    {
-                        mcode.exp(`DAL: withdrawFunds - .updateOne handling CRASHED with ${account}`, logSource, exp_update);
-                        reject(exp_update);
-                    })
-                    .finally(() =>
-                    {
-
-                    });
-            })
-            .catch((exp_find) =>
-            {
-                mcode.exp(`DAL: withdrawFunds - .findOne CRASHED for [${email}]`, logSource, exp_find);
-                reject(exp_find);
-            })
-            .finally(() =>
-            {
-
-            });
-    });
-};
-
-/**
- * @func accountBalance
- * @desc Get Balance in an Account.
- * @api public
- * @memberof dal
- * @param {string} email User's email account - UNIQUE KEY.
- * @returns {object} current data for Account from DB.
- *
- * @example
- *
- *      accountBalance('pparker@mit.edu');
- *
- */
-function accountBalance(email)
-{
-    return new Promise(async (resolve, reject) =>
-    {
-        db.collection('Accounts')
-            .findOne({"email": email})
-            .then((res_find) =>
-            {
-                mcode.log(`DAL: accountBalance - MongoDB response: ${JSON.stringify(res_find)}`, logSource, `info`);
-
-                // return the current RECORD, the RESPONSE from MongoDB
-                resolve(res_find);
-            })
-            .catch((exp_find) =>
-            {
-                mcode.exp(`DAL: accountBalance - .findOne CRASHED for email: [${email}]`, logSource, exp_find);
-                reject(exp_find);
-            })
-            .finally(() =>
-            {
-
-            });
-    });
-};
-
-/**
- * @func accountTransactions
- * @desc Get Transactions in an Account.
- * @api public
- * @memberof dal
- * @param {string} email User's email account - UNIQUE KEY.
- * @returns {object} current data for Account from DB.
- *
- * @example
- *
- *      accountTransactions('pparker@mit.edu');
- *
- */
-function accountTransactions(email)
-{
-    return new Promise(async (resolve, reject) =>
-    {
-        db.collection('Accounts')
-            .findOne({"email": email})
-            .then((res_find) =>
-            {
-                mcode.log(`DAL: accountTransactions - MongoDB response: ${JSON.stringify(res_find)}`, logSource, `info`);
-
-                // return the current RECORD, the RESPONSE from MongoDB
-                resolve(res_find);
-            })
-            .catch((exp_find) =>
-            {
-                mcode.exp(`DAL: accountTransactions - .findOne CRASHED for email: [${email}]`, logSource, exp_find);
-                reject(exp_find);
-            })
-            .finally(() =>
-            {
-
-            });
-    });
-};
-
-/**
- * @func allAccounts
- * @desc Return all data for all Accounts.
- * @api public
- * @memberof dal
- * @returns {array} current data for All Account from DB as an array of objects.
- *
- * @example
- *
- *      allAccounts();
- *
- */
-function allAccounts()
-{
-    return new Promise(async (resolve, reject) =>
-    {
-        db.collection('Accounts').find({}).toArray()
-            .then((res_array) =>
-            {
-                if (!res_array)
-                {
-                    mcode.log(`DAL: allAccounts - Get data failed`, logSource, `error`);
-                    reject(res_array);
-                }
-                else
-                {
-                    // debug only -- mcode.log(`DAL: allAccounts - MongoDB response: ${JSON.stringify(res_array)}`, logSource, `info`);
-                    mcode.log(`DAL: allAccounts - Get data succeeded, number = ${res_array.length}.`, logSource, `info`);
-
-                    // return the RESPONSE from MongoDB which is the ARRAY of RECORDs
-                    resolve(res_array);
-                }
-            })
-            .catch((exp_array) =>
-            {
-                mcode.exp(`DAL: allAccounts - .find CRASHED.`, logSource, exp_array);
-                reject(exp_array);
             })
             .finally(() =>
             {
@@ -537,8 +272,92 @@ function findAccount(email)
             })
             .catch((exp_find) =>
             {
-                mcode.exp(`DAL: findAccount - .findOne CRASHED for email: [${email}]`, logSource, exp_find);
+                mcode.exp(`DAL: findAccount - .findOne EXCEPTION for email: [${email}]`, logSource, exp_find);
                 reject(exp_find);
+            })
+            .finally(() =>
+            {
+
+            });
+    });
+};
+
+
+/**
+ * @func getAccount
+ * @desc Get all data for an Account.
+ * @api public
+ * @memberof dal
+ * @param {string} email User's email account - UNIQUE KEY.
+ * @returns {object} current data for a single Account from DB as an object.
+ *
+ * @example
+ *
+ *      getAccount('pparker@mit.edu');
+ *
+ */
+function getAccount(email)
+{
+    return new Promise(async (resolve, reject) =>
+    {
+        db.collection('Accounts')
+            .findOne({"email": email})
+            .then((res_find) =>
+            {
+                mcode.log(`DAL: getAccount - MongoDB response: ${JSON.stringify(res_find)}`, logSource, `info`);
+
+                // return the current RECORD, the RESPONSE from MongoDB
+                resolve(res_find);
+            })
+            .catch((exp_find) =>
+            {
+                mcode.exp(`DAL: getAccount - .findOne EXCEPTION for email: [${email}]`, logSource, exp_find);
+                reject(exp_find);
+            })
+            .finally(() =>
+            {
+
+            });
+    });
+};
+
+/**
+ * @func getAccounts
+ * @desc Return all data for all Accounts.
+ * @api public
+ * @memberof dal
+ * @returns {array} current data for All Accounts from DB as an array of objects.
+ *
+ * @example
+ *
+ *      getAccounts();
+ *
+ */
+function getAccounts()
+{
+    return new Promise(async (resolve, reject) =>
+    {
+        db.collection('Accounts').find({}).toArray()
+            .then((res_array) =>
+            {
+                if (!res_array)
+                {
+                    mcode.log(`DAL: getAccounts - Get data failed`, logSource, `error`);
+                    reject(res_array);
+                }
+                else
+                {
+                    // debug only -- mcode.log(`DAL: getAccounts - MongoDB response: ${JSON.stringify(res_array)}`, logSource, `info`);
+                    mcode.log(`DAL: getAccounts - Get data succeeded, number = ${res_array.length}.`, logSource, `info`);
+
+                    // return the RESPONSE from MongoDB which is the ARRAY of RECORDs
+                    resolve(res_array);
+                }
+            })
+            .catch((exp_array) =>
+            {
+                mcode.exp(`DAL: getAccounts - .find EXCEPTION.`, logSource, exp_array);
+                reject(exp_array);
             })
             .finally(() =>
             {
@@ -551,7 +370,7 @@ function findAccount(email)
 
 // #region  M E T H O D - E X P O R T S
 
-module.exports = {createAccount, deleteAccount, depositFunds, withdrawFunds, accountBalance, accountTransactions, allAccounts, findAccount};
+module.exports = {createAccount, deleteAccount, findAccount, getAccount, getAccounts};
 
 // #endregion
 

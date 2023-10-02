@@ -1,10 +1,10 @@
 // #region  H E A D E R
-// <copyright file="card.js" company="MicroCODE Incorporated">Copyright © 2022 MicroCODE, Inc. Troy, MI</copyright><author>Timothy J. McGuire</author>
+// <copyright file="AppCard.js" company="MicroCODE Incorporated">Copyright © 2022 MicroCODE, Inc. Troy, MI</copyright><author>Timothy J. McGuire</author>
 // #region  P R E A M B L E
 // #region  D O C U M E N T A T I O N
 /*
- *      Title:    MicroCODE Card component for App React App
- *      Module:   Modules (./context.js)
+ *      Title:    MicroCODE App Card component for React App
+ *      Module:   Modules (./AppCard.js)
  *      Project:  MicroCODE Common Code
  *      Customer: Internal
  *      Creator:  MicroCODE Incorporated
@@ -88,7 +88,7 @@ var logSource = path.basename(__filename);
 // #region  C O M P O N E N T – P U B L I C
 
 /**
- * @func BankCard
+ * @func AppCard
  * @memberof app
  * @desc a common App 'Card' definitions for all derived Components.
  * @api public
@@ -97,10 +97,10 @@ var logSource = path.basename(__filename);
  *
  * @example
  *
- *      Card(props);
+ *      AppCard(props);
  *
  */
-function BankCard(props)
+function AppCard(props)
 {
     // validate PROPS input(s)
 
@@ -115,8 +115,6 @@ function BankCard(props)
     // access CONTEXT for reference...
 
     // #region  P R I V A T E   F U N C T I O N S
-
-    // get the Account Balance once from Database on load
     React.useEffect(() =>
     {
         // Loads styles and data for Bank Card display.
@@ -191,7 +189,7 @@ function BankCard(props)
                 }
                 catch (exception)
                 {
-                    exp(`[BANKCARD] CRASHED - props: ${JSON.stringify(props)}`, logSource, exception);
+                    exp(`[AppCard] EXCEPTION - props: ${JSON.stringify(props)}`, logSource, exception);
                 }
 
             })();
@@ -233,7 +231,7 @@ function BankCard(props)
 
 // #region  C O M P O N E N T - E X P O R T S
 
-export default BankCard;
+export default AppCard;
 
 // #endregion
 

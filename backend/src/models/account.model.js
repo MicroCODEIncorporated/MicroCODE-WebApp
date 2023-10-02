@@ -5,7 +5,7 @@
 /*
  *      Title:    MicroCODE Common User Model
  *      Module:   Modules (./account.model.js)
- *      Project:  MicroCODE 3-Tire MERN 'Web App'
+ *      Project:  MicroCODE 3-Tire MERN `Web App`
  *      Customer: MicroCODE (Internal)
  *      Creator:  MicroCODE Incorporated
  *      Date:     October 2022
@@ -49,14 +49,14 @@
  *
  *  Date:         By-Group:   Rev:      Description:
  *
- *  03-Oct-2022   TJM-MCODE  {0001}     New module for common reusable MERN Template 'AppName'.
+ *  03-Oct-2022   TJM-MCODE  {0001}     New module for common reusable MERN Template `AppName`.
  *  14-Oct-2022   TJM-MCODE  {0002}     Added Roles for controlling access to ALL DATA.
  *
  *
  */
 "use strict";
 
-const mongoose = require('mongoose');
+const mongoose = require(`mongoose`);
 
 // include our common MicroCODE Server Library
 var mcode = require(`../mcodeServer.js`);
@@ -70,15 +70,12 @@ var mcode = require(`../mcodeServer.js`);
 
 // #region  C O N S T A N T S
 
-const transactionSchema = new mongoose.Schema(
+const eventSchema = new mongoose.Schema(
     {
         type: {
-            enum: ['DEPOSIT', 'WITHDRAW', 'BALANCE'],
+            enum: [`CREATE`, `LOGIN`, `LOGOUT`, `CLOSE`, `UPLOAD`, `CLONE`, `RENAME`, `DELETE`, `COMPARE`, `EMAIL`, `TEXT`, `DOWNLOAD`],
         },
-        amount: {
-            type: String,
-        },
-        balance: {
+        data: {
             type: String,
         },
         timestamp: {
@@ -97,17 +94,14 @@ const accountSchema = new mongoose.Schema(
         password: {
             type: String,
         },
-        balance: {
-            type: Number,
-        },
         role: {
-            enum: ['BANKER', 'CUSTOMER', 'AUDITOR'],
+            enum: [`ENGINEER`, `MANAGER`, `DEVELOPER`],
         },
         created: {
             type: String,
         },
-        transaction: {
-            type: [transactionSchema],
+        log: {
+            type: [eventSchema],
         }
     });
 
@@ -131,10 +125,9 @@ const accountSchema = new mongoose.Schema(
  * @param {string} email email address supplied by the user.
  * @param {string} password set by the user.
  * @param {string} role what type of account.
- * @param {number} deposit initial deposit, or $0.00.
- * @returns {object} newly created account object with its initial transaction.
+ * @returns {object} newly created account object with its initial event.
  */
-var accountRecord = function (username, email, password, role, deposit)
+var accountRecord = function (username, email, password, role)
 {
     let account =
     {
@@ -142,49 +135,50 @@ var accountRecord = function (username, email, password, role, deposit)
         email: email,
         password: password,
         role: role,
-        balance: parseFloat(deposit),
         created: mcode.timeStamp(),
-        transactions: []
+        log: []
     };
 
-    // keep in pennies
-    account.balance = mcode.roundToCents(account.balance);
-
-    // make initial depsoit transaction... (optional)
-    account.transactions.push(transactionRecord("DEPOSIT", deposit, account.balance));
+    // log event... (optional)
+    account.log.push(eventRecord(`CREATE`, `username: ${username}, role: ${role}`));
 
     return account;
 };
 
 /**
- * @func transactionRecord
+ * @func eventRecord
  * @desc Create an Account Transaction object.
  * @api private
- * @param {string} type One of: DEPOSIT, WITHDRAW, BALANCE, CLOSE.
- * @param {number} amount amount of money involved in this transaction.
- * @param {number} balance resulting balance after the transaction executed.
- * @returns {object} newly created transaction object.
+ * @param {string} event One of: `CREATE`, `LOGIN`, `LOGOUT`, `CLOSE`...
+ * @param {string} valuePairs a string of `member: value` pairs.
+ * @returns {object} newly created event object.
  */
-var transactionRecord = function (type, amount, balance)
+var eventRecord = function (event, valuePairs)
 {
-    let transaction =
+    let splitPairs = {};
+    valuePairs.split(`,`).forEach(pair =>
     {
-        type: type,
-        amount: amount,
-        balance: balance,
+        let [key, value] = pair.split(`:`).map(str => str.trim());
+        splitPairs[key] = value;
+    });
+
+    let eventRecord = {
+        type: event,
+        data: splitPairs,
         timeStamp: mcode.timeStamp()
     };
 
-    return transaction;
+    return eventRecord;
 };
+
 
 // #endregion
 
 // #region  M E T H O D - E X P O R T S
 
-const Account = mongoose.model('Account', accountSchema);
+const Account = mongoose.model(`Account`, accountSchema);
 
-module.exports = {Account, accountRecord, transactionRecord};
+module.exports = {Account, accountRecord, eventRecord};
 
 // #endregion
 

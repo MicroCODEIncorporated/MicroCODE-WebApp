@@ -36,6 +36,14 @@
 #          So I figured out how to invoke it just like 'frontend/client' and 'backend/server'. Hail CAESAR.
 #
 #
+#      Defintion Precedence:
+#      --------------------
+#      1) * docker-compose.yaml *
+#      2) Dockerfile
+#      3) .env
+#      4) .env.development / .env.production
+#
+#
 #       REFERENCES:
 #       -----------
 #
@@ -124,30 +132,33 @@
 #
 #  27-Sep-2022   TJM-MCODE  {0001}    New file for my '${APP_NAME}' 3-Tier Dockerized Template solution.
 #                                     Define all the APP_* environment variables in your .env file.
+#  01-Oct-2023   TJM-MCODE  {0002}    Updated 'restart' policy for DEV vs PROD; moved back to ${APP_NAME} for
+#                                     'volumn names'.
+#
+#
 #
 #
 version: '3'
 #
-#  V O L U M E S -- NOTE: can't use ${APP_NAME} here, and internal are auto-prefixed with <appname>_<name-specified>
-#                         with <appname>_<name-specified> if you don't use [name: <volume-name>]
+#  V O L U M E S
 #  -------------
 #
 volumes:
   frontend-volume:  # our Frontend/Client execution volume
-    name: "mcode-frontend"
-    external: false  # temporary, build specific
+    name: "${APP_NAME}-frontend"
+    external: false  # temporary, build specific - created by 'docker-compose up'
 #
   backend-volume:  # our Backend/Server execution volume
-    name: "mcode-backend"
-    external: false  # temporary, build specific
+    name: "${APP_NAME}-backend"
+    external: false  # temporary, build specific - created by 'docker-compose up'
 #
   database-volume:  # our Database configuration volume
-    name: "mcode-database"
-    external: false  # temporary, build specific
+    name: "${APP_NAME}-database"
+    external: false  # temporary, build specific - created by 'docker-compose up'
 #
   mongodb-volume:  # our Database/MongoDB storage volume
-    name: "mcode-mongodb"
-    external: true  # keep after all Containers are destroyed
+    name: "${APP_NAME}-mongodb"
+    external: true  # keep after all Containers are destroyed - must be created manually
 #
 services:
 #
@@ -169,7 +180,7 @@ services:
       - '${APP_FRONTEND_PORT:-3000}:3000'
     volumes:
       - frontend-volume:/exe/frontend  # temporary volume
-    restart: always
+    restart: ${APP_RESTART_POLICY}
     networks:
       - react-express  # frontend to backend connection
     depends_on:
@@ -193,7 +204,7 @@ services:
       - '${APP_BACKEND_PORT:-8080}:8080'
     volumes:
       - backend-volume:/exe/backend  # temporary volume
-    restart: always
+    restart: ${APP_RESTART_POLICY}
     networks:
       - react-express  # frontend to backend connection
       - express-mongo  # backend to database connection
@@ -219,7 +230,7 @@ services:
     volumes:
       - database-volume:/data/configdb  # temporary volume -- NOTE: /data/configdb/ is the path required by MongoDB
       - mongodb-volume:/data/db  # persist our database in this volume -- NOTE: /data/db/ is the path required by MongoDB
-    restart: always
+    restart: ${APP_RESTART_POLICY}
     networks:
       - express-mongo  # backend to database connection
 #

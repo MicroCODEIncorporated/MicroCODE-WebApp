@@ -39,7 +39,7 @@
  *      -----------
  *
  *      1. Starter Code Repository (Front end and API)
- *         https://github.com/1125f16/badbank
+ *         https://github.com/1125f16/mcode
  *      2. Starter Code Repository (Simple database)
  *         https://github.com/1125f16/littledb
  *         This is a repository that will get you familiar with the process of storing data with the lowdb package.
@@ -67,8 +67,7 @@
  *  24-Dec-2021   TJM-MCODE  {0001}   New module for MIT Fire Hydrant assignment.
  *  05-Mar-2022   TJM-MCODE  {0002}   Documentation updates.
  *  11-Oct-2022   TJM-MCODE  {0003}   Brought into React App version to encapsulate the API.
- *  14-Oct-2022   TJM-MCODE  {0002}   Added Roles for controlling access to ALL DATA.
- *  15-Oct-2022   TJM-MCODE  {0002}   Added 'Send Money' feature.
+ *  14-Oct-2022   TJM-MCODE  {0004}   Added Roles for controlling access to HISTORY.
  *
  *
  */
@@ -97,8 +96,8 @@ var logSource = path.basename(__filename);
 // #region  C O N S T A N T S
 
 //    localhost:808x for development
-//    https://appname.tjmcode.io/backend for frontend
-// or http://appname.tjmcode.io:808x for backend
+//    https://appname.mcode.com/backend for frontend
+// or http://appname.mcode.com:808x for backend
 //
 const API_URL = `${process.env.REACT_APP_BACKEND_URL}`;
 
@@ -179,7 +178,6 @@ var api = {};
  * @param {string} email user's email - UNIQUE ACCOUNT KEY.
  * @param {string} password user's password.
  * @param {string} role account type.
- * @param {string} deposit initial deposit.
  * @returns {object} the Backend Response DATA only as an JavaScript value.
  *
  * @example
@@ -187,10 +185,10 @@ var api = {};
  *    res = api.create("username", "user@company.com", "secret01", 1111.22);
  *
  */
-api.create = async (username, email, password, role, deposit) =>
+api.create = async (username, email, password, role) =>
 {
     var functionName = "Create Account";
-    var url = `${API_URL}/account/create/${username}/${email}/${password}/${role}/${deposit}`;
+    var url = `${API_URL}/account/create/${username}/${email}/${password}/${role}`;
     return getResData(functionName, url);
 };
 
@@ -238,50 +236,8 @@ api.login = async (email, password) =>
 };
 
 /**
- * @func deposit
- * @desc DEPOSIT funds to Account in Back-End.
- * @api public
- * @memberof api
- * @param {string} email user's email - UNIQUE ACCOUNT KEY.
- * @param {string} deposit deposit amount.
- * @returns {object} the Backend Response DATA only as an JavaScript value.
- *
- * @example
- *
- *    res = api.create("username", "user@company.com", "secret01", 1111.22);
- *
- */
-api.deposit = async (email, deposit) =>
-{
-    var functionName = "Deposit Funds";
-    var url = `${API_URL}/account/deposit/${email}/${deposit}`;
-    return getResData(functionName, url);
-};
-
-/**
- * @func withdraw
- * @desc WITHDRAW funds from Account in Back-End.
- * @api public
- * @memberof api
- * @param {string} email user's email - UNIQUE ACCOUNT KEY.
- * @param {string} withdraw withdraw amount.
- * @returns {object} the Backend Response DATA only as an JavaScript value.
- *
- * @example
- *
- *    res = api.create("username", "user@company.com", "secret01", 1111.22);
- *
- */
-api.withdraw = async (email, withdraw) =>
-{
-    var functionName = "Withdraw Funds";
-    var url = `${API_URL}/account/withdraw/${email}/${withdraw}`;
-    return getResData(functionName, url);
-};
-
-/**
- * @func transactions
- * @desc Get all user TRANSACTIONS from Back-End.
+ * @func events
+ * @desc Get all user EVENTS from Back-End.
  * @api public
  * @memberof api
  * @param {string} email user's email - UNIQUE ACCOUNT KEY.
@@ -289,72 +245,32 @@ api.withdraw = async (email, withdraw) =>
  *
  * @example
  *
- *    res = api.create("username", "user@company.com", "secret01", 1111.22);
+ *    res = api.events("tmcguire@mcode.com");
  *
  */
-api.transactions = async (email) =>
+api.events = async (email) =>
 {
-    var functionName = "View Transactions";
-    var url = `${API_URL}/account/transactions/${email}`;
+    var functionName = "View Events";
+    var url = `${API_URL}/account/events/${email}`;
     return getResData(functionName, url);
 };
 
 /**
- * @func balance
- * @desc Get user BALANCE from Back-End.
- * @api public
- * @memberof api
- * @param {string} email user's email - UNIQUE ACCOUNT KEY.
- * @returns {object} the Backend Response DATA only as an JavaScript value.
- *
- * @example
- *
- *    res = api.create("username", "user@company.com", "secret01", 1111.22);
- */
-api.balance = async (email) =>
-{
-    var functionName = "View Balance";
-    var url = `${API_URL}/account/balance/${email}`;
-    return getResData(functionName, url);
-};
-
-/**
- * @func sendMoney
- * @desc SEND MONEY to another App user from Back-End.
- * @api public
- * @memberof api
- * @param {string} email user's email - UNIQUE ACCOUNT KEY.
- * @param {string} withdraw withdraw amount.
- * @param {string} receiver payee's email - UNIQUE ACCOUNT KEY.
- * @returns {object} the Backend Response DATA only as an JavaScript value.
- *
- * @example
- *
- *    res = api.create("username", "user@company.com", "secret01", 1111.22);
- */
-api.sendMoney = async (email, withdraw, receiver) =>
-{
-    var functionName = "Send Money";
-    var url = `${API_URL}/account/sendMoney/${email}/${withdraw}/${receiver}`;
-    return getResData(functionName, url);
-};
-
-/**
- * @func allData
- * @desc Get ALL DATA from Back-End.
+ * @func history
+ * @desc Get HISTORY from Back-End.
  * @api public
  * @memberof api
  * @returns {object} the Backend Response DATA only as an JavaScript value.
  *
  * @example
  *
- *    res = api.create("username", "user@company.com", "secret01", 1111.22);
+ *    res = api.history();
  *
  */
-api.allData = async () =>
+api.history = async () =>
 {
-    var functionName = "Get All Data";
-    var url = `${API_URL}/account/all`;
+    var functionName = "Get History";
+    var url = `${API_URL}/account/history`;
     return getResData(functionName, url);
 };
 

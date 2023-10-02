@@ -1,11 +1,11 @@
 // #region  H E A D E R
-// <copyright file="alldata.js" company="MicroCODE Incorporated">Copyright © 2022 MicroCODE, Inc. Troy, MI</copyright><author>Timothy J. McGuire</author>
+// <copyright file="History.js" company="MicroCODE Incorporated">Copyright © 2022 MicroCODE, Inc. Troy, MI</copyright><author>Timothy J. McGuire</author>
 // #region  P R E A M B L E
 // #region  D O C U M E N T A T I O N
 /*
- *      Title:    MicroCODE App React All Data
- *      Module:   Modules (./alldata.js)
- *      Project:  MicroCODE App React App
+ *      Title:    MicroCODE React App History
+ *      Module:   Modules (./History.js)
+ *      Project:  MicroCODE Web App React App
  *      Customer: Internal
  *      Creator:  MicroCODE Incorporated
  *      Date:     June 2022
@@ -23,7 +23,7 @@
  *      DESCRIPTION:
  *      ------------
  *
- *      This module implements the MicroCODE's App React Login.
+ *      This module implements the MicroCODE's Web App React Login.
  *
  *
  *      REFERENCES:
@@ -47,7 +47,7 @@
  *
  *  Date:         By-Group:   Rev:     Description:
  *
- *  02-Jun-2022   TJM-MCODE  {0001}    New module implementing the App Context Display (All Data).
+ *  02-Jun-2022   TJM-MCODE  {0001}    New module implementing the Web App Context Display (History).
  *
  *
  */
@@ -60,7 +60,7 @@
 
 import React, {useContext, useEffect, useState} from 'react';
 import {AppContext} from './AppContext';
-import BankCard from './BankCard';
+import AppCard from './AppCard';
 
 // include the Back-End API
 import {api} from '../api/api.js';
@@ -92,18 +92,18 @@ var logSource = path.basename(__filename);
 // #region  C O M P O N E N T – P U B L I C
 
 /**
- * @func AllData
+ * @func History
  * @memberof app
- * @desc returns all data from our App Accounts.
+ * @desc returns all events from all our Web App Accounts.
  * @api public
  * @param {nil} no properties.
  * @returns {JSX} JavaScript Extension (JSX) code representing the current state of the component.
  * @example
  *
- *      AllData();
+ *      History();
  *
  */
-function AllData()
+function History()
 {
     // validate PROPS input(s)
 
@@ -123,15 +123,15 @@ function AllData()
     {
         (async () =>
         {
-            log(`[ALLDATA] Getting all Accounts from DB...`, logSource, `info`);
-            let data = await api.allData();
-            setAccounts(data);
+            log(`[HISTORY] Getting Accounts from DB...`, logSource, `info`);
+            let accounts = await api.history();
+            setAccounts(accounts);
 
         })();
 
     }, []);
 
-    // Build an HTML List of all our User Accounts
+    // Build an HTML List of all events from all our User Accounts
     function buildAccountList()
     {
         const accountArray = [];
@@ -139,7 +139,7 @@ function AllData()
 
         if (accounts)
         {
-            log(`[ALLDATA] Returning All Data listing...`, logSource, `info`);
+            log(`[HISTORY] Returning History listing...`, logSource, `info`);
 
             // remove MongoDB IDs before using in App Context
             accounts.forEach(element =>
@@ -154,9 +154,9 @@ function AllData()
         }
         else
         {
-            log(`[ALLDATA] Awaiting Server response...`, logSource, `warn`);
+            log(`[HISTORY] Awaiting Server response...`, logSource, `warn`);
 
-            accountArray.push(<li key={key} className="list-group-item">Awaiting mcode-backend response...</li>);
+            accountArray.push(<li key={key} className="list-group-item">Awaiting ${process.env.APP_NAME}-backend response...</li>);
         }
 
         return accountArray;
@@ -183,16 +183,16 @@ function AllData()
 
     // OUTPUT the Component's JavaScript Extension (JSX) code...
     return (
-        <BankCard
+        <AppCard
             bgcolor="warning"
-            header="All Accounts"
+            header="History"
             width="60rem"
             body={needInput ? (
                 <form>
-                    <h5 className="card-title">Show all data for all Accounts</h5>
-                    <p className="card-text">WARNING: This is display all the data <br />from the User Account Database.</p>
+                    <h5 className="card-title">Show history for all Accounts</h5>
+                    <p className="card-text">WARNING: This will display all the data <br />from the User Account Database.</p>
                     <div className="col-10">
-                        <button className="btn btn-outline-light" onClick={showAllData_Click} type="display">Show All Data</button>
+                        <button className="btn btn-outline-light" onClick={showAllData_Click} type="display">Show History</button>
                     </div>
                 </form>
             ) : (
@@ -213,7 +213,7 @@ function AllData()
 
 // #region  C O M P O N E N T - E X P O R T S
 
-export default AllData;
+export default History;
 
 // #endregion
 

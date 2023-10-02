@@ -3,9 +3,9 @@
 // #region  P R E A M B L E
 // #region  D O C U M E N T A T I O N
 /*
- *      Title:    MicroCODE App React App
+ *      Title:    MicroCODE Web React App (WebApp)
  *      Module:   Modules (./App.js)
- *      Project: MicroCODE 3-Tier MERN App 'BadBank'
+ *      Project:  MicroCODE 3-Tier MERN App 'Web App'
  *      Customer: MicroCODE (Internal)
  *      Creator:  MicroCODE Incorporated
  *      Date:     October 2022
@@ -67,16 +67,12 @@ import {HashRouter, Routes, Route} from 'react-router-dom';
 
 import {AppContext} from './Components/AppContext';
 
+import Home from './Components/Home';
 import NavBar from './Components/NavBar';
 import Account from './Components/Account';
-import AllData from './Components/AllData';
-import Balance from './Components/Balance';
-import Deposit from './Components/Deposit';
-import Home from './Components/Home';
 import Login from './Components/Login';
-import SendMoney from './Components/SendMoney';
-import Transactions from './Components/Transactions';
-import Withdraw from './Components/Withdraw';
+import Events from './Components/Events';
+import History from './Components/History';
 
 import './App.css';
 
@@ -101,8 +97,8 @@ require('dotenv').config();
 // #region  C O N S T A N T S
 
 //    localhost:8081 for development
-//    https://appname.tjmcode.io/backend for frontend
-// or http://appname.tjmcode.io:8081 for backend
+//    https://appname.mcode.com/backend for frontend
+// or http://appname.mcode.com:8081 for backend
 //
 const apiUrl = `${process.env.REACT_APP_BACKEND_URL}`;
 
@@ -167,12 +163,8 @@ function App()
                         <Route path="/" exact element={<Home />}></Route>
                         <Route path="/Account/" element={<Account />}></Route>
                         <Route path="/Login/" element={<Login />}></Route>
-                        <Route path="/Deposit/" element={<Deposit />}></Route>
-                        <Route path="/Withdraw/" element={<Withdraw />}></Route>
-                        <Route path="/Balance/" element={<Balance />}></Route>
-                        <Route path="/SendMoney/" element={<SendMoney />}></Route>
-                        <Route path="/Transactions/" element={<Transactions />}></Route>
-                        <Route path="/AllData/" element={<AllData />}></Route>
+                        <Route path="/Events/" element={<Events />}></Route>
+                        <Route path="/History/" element={<History />}></Route>
                     </Routes>
                 </div>
 
